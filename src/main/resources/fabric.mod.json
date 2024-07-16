@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "commander",
+	"version": "${version}",
+	"name": "commander",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/commander/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"risinget.commander.Commander"
+		],
+		"client": [
+			"risinget.commander.CommanderClient"
+		]
+	},
+	"mixins": [
+		"commander.mixins.json",
+		{
+			"config": "commander.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
