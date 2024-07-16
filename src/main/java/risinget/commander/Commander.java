@@ -1,16 +1,9 @@
 package risinget.commander;
 
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-
-//
-
-//
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mojang.brigadier.context.CommandContext;
 
 public class Commander implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
