@@ -1,5 +1,4 @@
 package risinget.commander;
-
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -24,6 +23,9 @@ public class CommanderClient implements ClientModInitializer {
 	@Override
 
 	public void onInitializeClient() {
+
+
+
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
 			dispatcher.register(ClientCommandManager.literal("print").executes(context -> {
 				context.getSource().sendFeedback(Text.literal("tu mensaje es :"));
@@ -39,13 +41,45 @@ public class CommanderClient implements ClientModInitializer {
 			}));
 		});
 
+
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-			dispatcher.register(ClientCommandManager.literal("activarModoSaftote").executes(context -> {
-				context.getSource().sendFeedback(Text.literal("kerico").formatted(Formatting.RED));
+			dispatcher.register(ClientCommandManager.literal("emojis").executes(context -> {
+				String[] emojis = { "☄", "⭐" };
+
+				for (String emoji : emojis) {
+					MutableText emojiText = Text.literal(emoji + " ")
+							.styled(style -> style
+									.withColor(Formatting.RED)
+									.withClickEvent(
+											new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/copyemoji " + emoji))
+									.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+											Text.literal("Click para copiar!"))));
+
+					context.getSource().sendFeedback(emojiText);
+				}
+
+				return 1;
+			}));
+
+			dispatcher.register(ClientCommandManager.literal("copyemoji")
+					.then(ClientCommandManager.argument("emoji", StringArgumentType.greedyString())
+							.executes(context -> {
+								String emoji = StringArgumentType.getString(context, "emoji");
+								MinecraftClient.getInstance().keyboard.setClipboard(emoji); // Usa el método de
+																							// Minecraft para copiar al
+																							// portapapeles
+								context.getSource().sendFeedback(Text.literal("Emoji copiado al portapapeles: " + emoji)
+										.formatted(Formatting.GREEN));
+								return 1;
+							})));
+		});
+
+		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
+			dispatcher.register(ClientCommandManager.literal("emojis2").executes(context -> {
+				context.getSource().sendFeedback(Text.literal("ᴘʀᴇᴠɪᴇᴡ ᴛᴇxᴛ").formatted(Formatting.RED));
 				return 1;
 			}));
 		});
-
 
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
 			dispatcher.register(ClientCommandManager.literal("print")
@@ -61,31 +95,7 @@ public class CommanderClient implements ClientModInitializer {
 							})));
 		});
 
-
-
-		// clicakabke text to copy to clipboard //fix minecraft client i
-
-		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-			dispatcher.register(ClientCommandManager.literal("copy").executes(context -> {
-				MinecraftClient.getInstance().keyboard.setClipboard("Texto copiado al portapapeles");
-				context.getSource().sendFeedback(Text.literal("Texto copiado al portapapeles").formatted(Formatting.GREEN));
-				return 1;
-			}));
-
-			// close minecraftclient
-
-			dispatcher.register(ClientCommandManager.literal("close").executes(context -> {
-				MinecraftClient.getInstance().stop();
-				return 1;
-			}));
-		});
-
-		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-			dispatcher.register(ClientCommandManager.literal("emojis").executes(context -> {
-				context.getSource().sendFeedback(Text.literal("☄ ☄ ⭐").formatted(Formatting.RED));
-				return 1;
-			}));
-		});
+		
 		 // Inicialización del KeyBinding
         KeyBinding copyPosKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "Copiar posición", // La traducción del nombre de la tecla en el archivo de idiomas
