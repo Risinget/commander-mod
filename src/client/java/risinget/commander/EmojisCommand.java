@@ -45,6 +45,8 @@ public class EmojisCommand {
                                         .formatted(Formatting.GREEN));
                                 return 1;
                             })));
+
+
         });
     }
 

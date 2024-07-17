@@ -1,30 +1,17 @@
 package risinget.commander;
+
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
-import java.util.HashMap;
-import java.util.Map;
 import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.util.Formatting;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
-import net.minecraft.client.network.ServerInfo;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.minecraft.client.option.KeyBinding;
-
+import net.minecraft.client.MinecraftClient;
 public class CommanderClient implements ClientModInitializer {
 
 
@@ -32,20 +19,16 @@ public class CommanderClient implements ClientModInitializer {
 
 	public void onInitializeClient() {
 
-
-
-		HistoryChat historyChat = new HistoryChat();
-
 		SmallCapsConverter smallCapsConverter = new SmallCapsConverter();
 		smallCapsConverter.converter();
 
-		EmojisCommand emojis = new EmojisCommand();
+		new EmojisCommand();
 
-		CoordsCopyShortcut coordsCopyShortcut = new CoordsCopyShortcut();
+		new CoordsCopyShortcut();
 
-		Factorial factorial = new Factorial();
+		new Factorial();
 
-		PlayerAutoDisconnect playerAutoDisconnect = new PlayerAutoDisconnect();
+		new PlayerAutoDisconnect();
 
 
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
@@ -71,7 +54,28 @@ public class CommanderClient implements ClientModInitializer {
 
 
 
+		// Inicialización del KeyBinding
+		KeyBinding openGUI = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+				"OpenGUI", // La traducción del nombre de la tecla en el archivo de idiomas
+				InputUtil.Type.KEYSYM,
+				GLFW.GLFW_KEY_F10, // La tecla F9
+				"Commander" // La categoría de la tecla en la configuración de controles
+		));
+
+		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+			if (openGUI.wasPressed()) {
+				
+				MinecraftClient.getInstance().setScreen(
+						new CustomScreen(Text.empty()));
+			}
+		});
+
+
+
 
 
 	}
+
+
+
 }
