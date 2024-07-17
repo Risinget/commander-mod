@@ -14,7 +14,6 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 
 public class SmallCapsConverter {
-    private final Map<Character, Character> diccionario = new HashMap<>();
 
     public void converter() {
         Map<Character, Character> diccionario = new HashMap<>();

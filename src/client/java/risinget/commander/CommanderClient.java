@@ -16,15 +16,23 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 
 import net.minecraft.client.MinecraftClient;
-
+import net.minecraft.client.gui.screen.TitleScreen;
+import net.minecraft.client.gui.screen.multiplayer.ConnectScreen;
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import net.minecraft.client.network.ServerInfo;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.option.KeyBinding;
 
 public class CommanderClient implements ClientModInitializer {
+
+
 	@Override
 
 	public void onInitializeClient() {
+
+
 
 		HistoryChat historyChat = new HistoryChat();
 
@@ -36,6 +44,9 @@ public class CommanderClient implements ClientModInitializer {
 		CoordsCopyShortcut coordsCopyShortcut = new CoordsCopyShortcut();
 
 		Factorial factorial = new Factorial();
+
+		PlayerAutoDisconnect playerAutoDisconnect = new PlayerAutoDisconnect();
+
 
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
 			dispatcher.register(ClientCommandManager.literal("print").executes(context -> {
@@ -58,9 +69,9 @@ public class CommanderClient implements ClientModInitializer {
 							})));
 		});
 
+
+
+
+
 	}
-
-
-	
-
 }
