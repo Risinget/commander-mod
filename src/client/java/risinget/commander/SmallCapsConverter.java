@@ -64,8 +64,7 @@ public class SmallCapsConverter {
                         }
 
                         String convertedText = textoConvertido.toString();
-
-                        MutableText feedbackText = Text.literal("Tu texto convertido es: " + convertedText)
+                        MutableText feedbackText = Text.literal("[Commander] Tu texto convertido es: " + convertedText)
                             .styled(style -> style
                                 .withColor(TextColor.fromRgb(0x00FF00)) // Cambia el color si deseas
                                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click para copiar")))
