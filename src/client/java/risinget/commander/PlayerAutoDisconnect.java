@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 
 public class PlayerAutoDisconnect {
 	public boolean isOn;
+	public int healthMin;
 
     public PlayerAutoDisconnect(){
 
@@ -38,7 +39,7 @@ public class PlayerAutoDisconnect {
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (client.player != null) {
 				float health = client.player.getHealth();
-				if (health < 10 && this.isOn) { // 5 corazones equivalen a 10 puntos de salud
+				if (health < this.healthMin && this.isOn) { // 5 corazones equivalen a 10 puntos de salud
 					client.world.disconnect(); // tell the server you are disconnecting
 					client.disconnect();
             		client.setScreen(new MultiplayerScreen(new TitleScreen()));
@@ -47,4 +48,24 @@ public class PlayerAutoDisconnect {
 			}
 		});
     }
+	public void setHealthMin(int healthMin){
+		this.healthMin = healthMin;
+	}
+
+	public int getHealthMin(){
+		return this.healthMin;
+	}
+
+	public boolean getOn(){
+		return this.isOn;
+	
+	}
+
+	public boolean isOn() {
+		return isOn;
+	}
+
+	public void setOn(boolean isOn) {
+		this.isOn = isOn;
+	}
 }

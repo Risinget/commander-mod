@@ -8,6 +8,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 
 public class CoordsCopyShortcut {
+    public String coordsFormat = "X: {X}, Y: {Y}, Z: {Z}";
 
     public CoordsCopyShortcut() {
          // Inicialización del KeyBinding
@@ -26,14 +27,25 @@ public class CoordsCopyShortcut {
 					int posX = client.player.getBlockPos().getX();
 					int posY = client.player.getBlockPos().getY();
 					int posZ = client.player.getBlockPos().getZ();
-					String pos = "X: " + posX + ", Y: " + posY + ", Z: " + posZ;
+					String pos = replaceCoordsVariables(posX, posY, posZ);
 
 					client.keyboard.setClipboard(pos); // Use Minecraft's method to set clipboard content
 				}
             }
         });
     }
+    public void setCoordsFormat(String format) {
+        this.coordsFormat = format;
+    }
 
-    
-    
+    public String getCoordsFormat() {
+        return this.coordsFormat;
+    }
+
+    private String replaceCoordsVariables(int x, int y, int z) {
+        return this.coordsFormat.replace("{X}", String.valueOf(x))
+                .replace("{Y}", String.valueOf(y))
+                .replace("{Z}", String.valueOf(z));
+    }
+
 }
