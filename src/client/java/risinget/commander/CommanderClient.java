@@ -45,6 +45,11 @@ public class CommanderClient implements ClientModInitializer {
 		new ColorsCommand();
 		new TestTextColorsCommand();
 
+		new DaysToTime();
+
+		new CoordsConverter();
+
+
 
 		// ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
 		// 	dispatcher.register(ClientCommandManager.literal("print").executes(context -> {
