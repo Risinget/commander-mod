@@ -11,13 +11,11 @@ public class PlayerAutoDisconnect {
 
     public PlayerAutoDisconnect(){
 
-        
 		// Registrar un evento que se dispare al entrar a un mundo
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
 			this.isOn = false; // Establecer this.isOn en false al entrar a un mundo
 		});
 		
-
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (client.player != null) {
 				float health = client.player.getHealth();

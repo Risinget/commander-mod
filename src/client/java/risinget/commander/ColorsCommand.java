@@ -1,6 +1,7 @@
 package risinget.commander;
 
 import risinget.commander.utils.Formatter;
+import risinget.commander.utils.Prefix;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
@@ -76,15 +77,14 @@ public class ColorsCommand {
 
                 return 1;
             }));
-
+            Formatter formatter = new Formatter();
             dispatcher.register(ClientCommandManager.literal("copycolor")
                     .then(ClientCommandManager.argument("color", StringArgumentType.greedyString())
                             .executes(context -> {
                                 String color = StringArgumentType.getString(context, "color");
                                 MinecraftClient.getInstance().keyboard.setClipboard(color); // Copiar al portapapeles
-                                context.getSource().sendFeedback(
-                                        Text.literal("[Commander] Color copiado al portapapeles: " + color)
-                                                .formatted(Formatting.GREEN));
+                                MutableText text = formatter.parseAndFormatText(Prefix.COMMANDER+"&7 Color copiado al portapapeles: " + color);
+                                context.getSource().sendFeedback(text);
                                 return 1;
                             })));
 
@@ -93,9 +93,8 @@ public class ColorsCommand {
                             .executes(context -> {
                                 String style = StringArgumentType.getString(context, "style");
                                 MinecraftClient.getInstance().keyboard.setClipboard(style); // Copiar al portapapeles
-                                context.getSource().sendFeedback(
-                                        Text.literal("[Commander] Estilo copiado al portapapeles: " + style)
-                                                .formatted(Formatting.GREEN));
+                                MutableText text = formatter.parseAndFormatText(Prefix.COMMANDER+"&7 Estilo copiado al portapapeles: " + style);
+                                context.getSource().sendFeedback(text);
                                 return 1;
                             })));
         });

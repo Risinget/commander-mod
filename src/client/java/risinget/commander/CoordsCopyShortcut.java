@@ -1,5 +1,7 @@
 package risinget.commander;
 
+import risinget.commander.utils.Formatter;
+
 import org.lwjgl.glfw.GLFW;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -10,6 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.text.MutableText;
 
 public class CoordsCopyShortcut {
     public String coordsFormat = "X: {X}, Y: {Y}, Z: {Z}";
@@ -43,7 +46,10 @@ public class CoordsCopyShortcut {
                     String pos = replaceCoordsVariables(posX, posY, posZ);
 
                     client.keyboard.setClipboard(pos); // Use Minecraft's method to set clipboard content
-                    client.player.sendMessage(Text.of("Coords de posición copiadas"), true);
+                    Formatter formatter = new Formatter();
+                    MutableText text = formatter.parseAndFormatText("&b&oCoords de posición copiadas");
+                    // client.player.sendMessage(Text.of("Coords de posición copiadas"), true);
+                    client.player.sendMessage(text, true);
 
                 }
             }else if(copyPosBlockViewing.wasPressed()){

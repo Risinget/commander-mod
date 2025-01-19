@@ -49,7 +49,7 @@ public class CommanderClient implements ClientModInitializer {
 
 		new CoordsConverter();
 
-
+		new Commands();
 
 		// ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
 		// 	dispatcher.register(ClientCommandManager.literal("print").executes(context -> {
