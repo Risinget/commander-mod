@@ -12,17 +12,17 @@ public class Factorial {
     public Factorial(){
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
 			dispatcher.register(ClientCommandManager.literal("factorial")
-					.then(ClientCommandManager.argument("integer", StringArgumentType.string())
-							.executes(context -> {
-								// Obtener el argumento
-								String integer = StringArgumentType.getString(context, "integer");
-								// Usar el argumento en el mensaje
-								String finalFactorial = String.valueOf(factorial(Integer.parseInt(integer)));
-								context.getSource()
-										.sendFeedback(Text
-												.literal("Factorial de " + integer + " es: " + finalFactorial));
-								return 1;
-							})));
+				.then(ClientCommandManager.argument("integer", StringArgumentType.string())
+					.executes(context -> {
+						// Obtener el argumento
+						String integer = StringArgumentType.getString(context, "integer");
+						// Usar el argumento en el mensaje
+						String finalFactorial = String.valueOf(factorial(Integer.parseInt(integer)));
+						context.getSource()
+								.sendFeedback(Text
+										.literal("Factorial de " + integer + " es: " + finalFactorial));
+						return 1;
+					})));
 		});
     }
 

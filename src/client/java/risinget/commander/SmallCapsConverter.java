@@ -1,6 +1,6 @@
 package risinget.commander;
-
 import risinget.commander.utils.Formatter;
+import risinget.commander.utils.Prefix;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,7 +64,7 @@ public class SmallCapsConverter {
                             }
                         }
 
-                        String outputWithText = "&7[&cCommander&7] &7Tu texto convertido es:&r "+ textoConvertido;
+                        String outputWithText = Prefix.COMMANDER + "&7Tu texto convertido es:&r "+ textoConvertido;
 
                         Formatter formatter = new Formatter();
                         MutableText feedbackText = formatter.parseAndFormatText(outputWithText)
@@ -74,18 +74,7 @@ public class SmallCapsConverter {
 
                         context.getSource().sendFeedback(feedbackText);
                         return 1;
-
-
-                        // String convertedText = textoConvertido.toString();
-                        // MutableText feedbackText = Text.literal("[Commander] Tu texto convertido es: " + convertedText)
-                        //     .styled(style -> style
-                        //         .withColor(TextColor.fromRgb(0x00FF00)) // Cambia el color si deseas
-                        //         .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click para copiar")))
-                        //         .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, convertedText))
-                        //     );
-
-                        // context.getSource().sendFeedback(feedbackText);
-                        // return 1;
+                        
                     })
                 )
             );

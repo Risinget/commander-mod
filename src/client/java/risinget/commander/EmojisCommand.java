@@ -1,4 +1,6 @@
 package risinget.commander;
+import risinget.commander.utils.Prefix;
+import risinget.commander.utils.Formatter;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
@@ -36,10 +38,8 @@ public class EmojisCommand {
                     MutableText emojiText = Text.literal(emoji + " ")
                             .styled(style -> style
                                     .withColor(Formatting.RED)
-                                    .withClickEvent(
-                                            new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/copyemoji " + emoji))
-                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                            Text.literal("Click para copiar!"))));
+                                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/copyemoji " + emoji))
+                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click para copiar!"))));
 
                     combinedText.append(emojiText); // Añadir el texto del emoji al texto combinado
                 }
@@ -50,17 +50,18 @@ public class EmojisCommand {
             }));
 
             dispatcher.register(ClientCommandManager.literal("copyemoji")
-                    .then(ClientCommandManager.argument("emoji", StringArgumentType.greedyString())
-                            .executes(context -> {
-                                String emoji = StringArgumentType.getString(context, "emoji");
-                                MinecraftClient.getInstance().keyboard.setClipboard(emoji); // Usa el método de
-                                                                                            // Minecraft para copiar al
-                                                                                            // portapapeles
-                                context.getSource().sendFeedback(
-                                        Text.literal("[Commander] Emoji copiado al portapapeles: " + emoji)
-                                                .formatted(Formatting.GREEN));
-                                return 1;
-                            })));
+                .then(ClientCommandManager.argument("emoji", StringArgumentType.greedyString())
+                    .executes(context -> {
+                        String emoji = StringArgumentType.getString(context, "emoji");
+                        MinecraftClient.getInstance().keyboard.setClipboard(emoji); // Usa el método de
+                                                                                    // Minecraft para copiar al
+                                                                                    // portapapeles
+
+                        Formatter formatter = new Formatter();
+                        MutableText emojiText = formatter.parseAndFormatText(Prefix.COMMANDER+"&7 Emoji copiado al portapapeles: " + emoji);
+                        context.getSource().sendFeedback(emojiText);
+                        return 1;
+                    })));
         });
     }
 }
