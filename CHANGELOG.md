@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/Risinget/commander-mod/compare/v1.1.0...v1.2.0) (2025-02-23)
+
+
+### Features
+
+* add debug step to list downloaded files in release workflow ([bc023c5](https://www.github.com/Risinget/commander-mod/commit/bc023c5a5e8905695fbe86b018cb9c988270fec2))
+
 ## [1.1.0](https://www.github.com/Risinget/commander-mod/compare/v1.0.0...v1.1.0) (2025-02-23)
 
 
