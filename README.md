@@ -24,6 +24,9 @@ Aquí tienes una lista de los comandos que puedes usar y sus funciones:
 ---
 
 ### 🧮 **Comandos de Cálculos y Utilidades**
+- **`/gemini <prompt>`** 🔢  
+  Chatea con Gemini dentro de Minecraft! 🧮 (es necesario que configures tu api-key con F8 )
+  
 - **`/factorial <número>`** 🔢  
   Calcula el factorial de un número. ¡Matemáticas al rescate! 🧮
 
