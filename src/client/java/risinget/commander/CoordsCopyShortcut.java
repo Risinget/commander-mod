@@ -17,6 +17,10 @@ import net.minecraft.text.MutableText;
 public class CoordsCopyShortcut {
     public String coordsFormat = "X: {X}, Y: {Y}, Z: {Z}";
 
+    public void syncConfig(){
+        this.coordsFormat = ConfigCommander.getCoordsFormat();
+    }
+
     public CoordsCopyShortcut() {
          // Inicialización del KeyBinding
         KeyBinding copyPosKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(

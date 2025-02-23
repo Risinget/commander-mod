@@ -9,6 +9,11 @@ public class PlayerAutoDisconnect {
 	public boolean isOn;
 	public int healthMin;
 
+	public void syncConfig(){
+		this.isOn = ConfigCommander.getOn();
+		this.healthMin = ConfigCommander.getHealthMin();
+	}
+
     public PlayerAutoDisconnect(){
 
 		// Registrar un evento que se dispare al entrar a un mundo
@@ -23,7 +28,8 @@ public class PlayerAutoDisconnect {
 					client.world.disconnect(); // tell the server you are disconnecting
 					client.disconnect();
             		client.setScreen(new MultiplayerScreen(new TitleScreen()));
-
+					ConfigCommander.setOn(false);
+					ConfigCommander.HANDLER.save();
 				}
 			}
 		});
@@ -38,7 +44,6 @@ public class PlayerAutoDisconnect {
 
 	public boolean getOn(){
 		return this.isOn;
-	
 	}
 
 	public boolean isOn() {

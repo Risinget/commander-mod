@@ -20,12 +20,58 @@ public class ConfigCommander {
             .build();
 
     @SerialEntry
-    public boolean myCoolBoolean = true;
+    public static boolean activarDesconexion = true;
+    public static boolean isOn(){
+        return activarDesconexion;
+    }
+    public static boolean getOn(){
+        return activarDesconexion;
+    }
+    public static void setOn(boolean isOn){
+        activarDesconexion = isOn;
+    }
 
     @SerialEntry
-    public int myCoolInteger = 5;
+    public static int desconectarMenorVidaQue = 5;
+
+    public static int getHealthMin(){
+        return desconectarMenorVidaQue;
+    }
+    public static void setHealthMin(int healthMin){
+        desconectarMenorVidaQue = healthMin;
+    }
+
 
     @SerialEntry(comment = "This string is amazing")
-    public String myCoolString = "How amazing!";
+    public static String coordsFormat = "X: {X}, Y: {Y}, Z: {Z}";
 
+    public static String getCoordsFormat(){
+        return coordsFormat;
+    }
+    public static void setCoordsFormat(String format){
+        coordsFormat = format;
+    }
+
+    @SerialEntry(comment = "API KEY para GEMINI")
+    public static String API_KEY = "your-api-key-here";
+    public static String getApiKey(){
+        return API_KEY;
+    }
+    public static void setApiKey(String apiKey){
+       API_KEY = apiKey;
+    }
+
+    @SerialEntry(comment = "Modelo de Gemini")
+    public static String selectedModel = GeminiModel.PRO.getModelName();
+    public static GeminiModel getSelectedModel() {
+        for (GeminiModel model : GeminiModel.values()) {
+            if (model.getModelName().equals(selectedModel)) {
+                return model;
+            }
+        }
+        return GeminiModel.PRO; // Valor por defecto si no se encuentra
+    }
+    public static void setSelectedModel(String modelName) {
+        selectedModel = modelName;
+    }
 }
