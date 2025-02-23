@@ -1,20 +1,69 @@
-name: Release Workflow
+name: Build and Release Workflow
 
 on:
   push:
     branches:
-      - master
-jobs:
-  release-job:
-    runs-on: ubuntu-latest
+      - master  # Cambia a tu rama principal (main, master, etc.)
+  pull_request:
+    branches:
+      - master  # Ejecuta también en pull requests hacia la rama principal
 
+jobs:
+  build:
+    strategy:
+      matrix:
+        # Usa estas versiones de Java
+        java: [21]  # Versión LTS actual de Java
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v2
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'microsoft'
+
+      - name: Make Gradle Wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build and test
+        run: ./gradlew build
+
+      - name: Capture build artifacts
+        if: ${{ matrix.java == '21' }}  # Solo subir artefactos construidos con la última versión de Java
+        uses: actions/upload-artifact@v4
+        with:
+          name: Artifacts
+          path: build/libs/
+
+  release:
+    needs: build  # Depende del job de construcción
+    runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Release with release-please
         uses: google-github-actions/release-please-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: simple  # Specify the appropriate release type here
- 
+          release-type: simple  # Tipo de release
+          release-as: 1.21.4  # Especifica la versión que deseas liberar
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: Artifacts
+          path: build/libs/
+
+      - name: Upload JAR files to release
+        if: ${{ steps.release.outputs.release_created }}  # Solo subir si se creó un release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ steps.release.outputs.tag_name }} build/libs/*.jar
