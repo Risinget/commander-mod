@@ -78,3 +78,4 @@ jobs:
           asset_path: build/libs/*.jar
           asset_name: mod-${{ github.ref }}.jar
           asset_content_type: application/java-archive
+          
