@@ -17,3 +17,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: simple  # Specify the appropriate release type here
+ 
