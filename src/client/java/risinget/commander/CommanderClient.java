@@ -1,5 +1,6 @@
 package risinget.commander;
 
+import dev.isxander.yacl3.gui.YACLScreen;
 import org.lwjgl.glfw.GLFW;
 
 import dev.isxander.yacl3.api.ConfigCategory;
@@ -16,9 +17,15 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+
 public class CommanderClient implements ClientModInitializer {
 
-
+	private static final Logger log = LoggerFactory.getLogger(CommanderClient.class);
+	private boolean isConfigScreenOpen = false;
 
 	@Override
 	public void onInitializeClient() {
@@ -98,13 +105,17 @@ public class CommanderClient implements ClientModInitializer {
 				"Commander" // Asegúrate de que esto coincida con tu archivo de idiomas
 		));
 
-
+		 final boolean isConfigScreenOpen = false;
 		// Registrar el evento de tick del cliente
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (openGUIYacl.wasPressed()) {
+				this.isConfigScreenOpen = true;
 
-				ConfigCommander.HANDLER.save();
-				// Configurar y mostrar la pantalla de configuración
+		        ConfigCommander.HANDLER.load();
+				autoDisc.syncConfig();
+				geminiAI.syncConfig();
+				coordsShortcut.syncConfig();
+
 				client.setScreen(YetAnotherConfigLib.createBuilder()
 					.title(Text.of("Used for narration. Could be used to render a title in the future."))
 					.category(ConfigCategory.createBuilder()
@@ -116,16 +127,22 @@ public class CommanderClient implements ClientModInitializer {
 										.option(Option.<Boolean>createBuilder()
 												.name(Text.of("Activar desconexión automática"))
 												.description(OptionDescription.of(Text.of("Habilitar o deshabilitar la desconexión automática.")))
-												.binding(autoDisc.getOn(), () -> autoDisc.getOn(), newVal -> autoDisc.setOn(newVal))
+												.binding(ConfigCommander.getOn(), () -> ConfigCommander.getOn(), newVal -> {
+													ConfigCommander.setOn(newVal);
+													autoDisc.setOn(newVal);
+												})
 												.controller(TickBoxControllerBuilder::create)
 												.build())
 										.option(Option.<String>createBuilder()
 												.name(Text.of("Desconectarse al tener menor vida que"))
 												.description(OptionDescription.of(Text.of(
 														"Determina la cantidad de vida que el jugador debe tener para desconectarse automáticamente.")))
-												.binding( String.valueOf(autoDisc.getHealthMin()),
-																			() -> String.valueOf(autoDisc.getHealthMin()) ,
-														newVal -> { autoDisc.setHealthMin(Integer.parseInt(newVal)); })
+												.binding( String.valueOf(ConfigCommander.getHealthMin()) ,
+																			() -> String.valueOf(ConfigCommander.getHealthMin()) ,
+														newVal -> {
+													ConfigCommander.setHealthMin(Integer.parseInt(newVal));
+													autoDisc.setHealthMin(Integer.parseInt(newVal));
+												})
 												.controller(StringControllerBuilder::create)
 												.build())
 
@@ -148,25 +165,30 @@ public class CommanderClient implements ClientModInitializer {
 											.name(Text.of("Coords Format"))
 											.description(OptionDescription.of(Text.of(
 													"Hay tres variables X, Y y Z que se pueden usar en el formato de coordenadas. Estas variables se reemplazarán por las coordenadas del jugador.")))
-											.binding(coordsShortcut.getCoordsFormat(), () -> coordsShortcut
-														.getCoordsFormat() , newVal -> {
+											.binding(ConfigCommander.getCoordsFormat(),
+													() -> ConfigCommander.getCoordsFormat(),
+													newVal -> {
+															ConfigCommander.setCoordsFormat(newVal);
 															coordsShortcut.setCoordsFormat(newVal);
-															})
+														})
 											.controller(StringControllerBuilder::create)
 											.build())
 									.build())
 								.group(OptionGroup.createBuilder()
-									.name(Text.of("GEMINI AI")) // Nombre del grupo
+									.name(Text.of("Gemini AI")) // Nombre del grupo
 									.description(OptionDescription.of(Text.of(
 											"Configuración de la API KEY. Esta configuración se aplica a la GEMINI."))) // Descripción del grupo
 									.option(Option.<String>createBuilder()
-											.name(Text.of("API KEY")) // Nombre de la opción
+											.name(Text.of("Api-Key")) // Nombre de la opción
 											.description(OptionDescription.of(Text.of(
 													"API KEY de la API de GEMINI. Para obtener una API KEY, visite https://generativelanguage.googleapis.com/"))) // Descripción de la opción
 											.binding(
-													"default-api-key", // Valor predeterminado (puede ser una cadena vacía o un valor por defecto)
-													() -> geminiAI.getApiKey(), // Getter: Obtiene el valor actual de la API KEY
-													newVal -> geminiAI.setApiKey(newVal) // Setter: Guarda el nuevo valor de la API KEY
+													ConfigCommander.getApiKey(), // Valor predeterminado (puede ser una cadena vacía o un valor por defecto)
+													() -> ConfigCommander.getApiKey(), // Getter: Obtiene el valor actual de la API KEY
+													newVal ->{
+														ConfigCommander.setApiKey(newVal); // Setter: Guarda el nuevo valor de la API KEY
+														geminiAI.setApiKey(newVal); // Setter: Guarda el nuevo valor de la API KEY
+													}
 											)
 											.controller(StringControllerBuilder::create) // Controlador para campos de texto
 											.build())
@@ -175,10 +197,11 @@ public class CommanderClient implements ClientModInitializer {
 											.description(OptionDescription.of(Text.literal(
 													"Selecciona el modelo de GEMINI que deseas utilizar.")))
 											.binding(
-													GeminiModel.PRO, // ✅ Usa GeminiModel en vez de "A"
-													() -> geminiAI.getSelectedModel(), // ✅ Getter devuelve GeminiModel
+													ConfigCommander.getSelectedModel(), // ✅ Usa GeminiModel en vez de "A"
+													() -> ConfigCommander.getSelectedModel(), // ✅ Getter devuelve GeminiModel
 													newVal -> {
 														System.out.println(newVal.getModelName());
+														ConfigCommander.setSelectedModel(newVal.getModelName());
 														geminiAI.setSelectedModel(newVal);
 													}
 													// ✅ Convierte GeminiModel a String
@@ -192,7 +215,18 @@ public class CommanderClient implements ClientModInitializer {
 							.build())
 					.build()
 					.generateScreen(client.currentScreen));
+
+				System.out.println("PANTALLA ANTES:");
+				System.out.println(client.currentScreen );
 			}
+
+			if (this.isConfigScreenOpen && !(client.currentScreen instanceof YACLScreen)) {
+				// Aquí detectas cuando la pantalla se cierra
+				System.out.println("La pantalla de configuración fue cerrada");
+				this.isConfigScreenOpen = false;
+				ConfigCommander.HANDLER.save();
+			}
+
 		});
 	}
 }

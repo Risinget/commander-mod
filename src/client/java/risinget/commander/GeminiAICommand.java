@@ -25,25 +25,29 @@ import risinget.commander.utils.Prefix;
 public class GeminiAICommand {
   
 
-   private GeminiModel selectedModel = GeminiModel.PRO;
+    private GeminiModel selectedModel = GeminiModel.PRO;
+    public String API_KEY = "inserta tu API-KEY aqui";
 
     public GeminiModel getSelectedModel() {
         return this.selectedModel;
     }
-
     public void setSelectedModel(GeminiModel model) {
         this.selectedModel = model;
     }
 
-    public String API_KEY = "inserta tu API-KEY aqui";
-
     public String getApiKey(){
-      return this.API_KEY;
+        return this.API_KEY;
     }
 
     public void setApiKey(String API_KEY){
        this.API_KEY = API_KEY;
     }
+
+    public void syncConfig(){
+      this.API_KEY = ConfigCommander.getApiKey();
+      this.selectedModel = ConfigCommander.getSelectedModel();
+    }
+
 
     public GeminiAICommand(){
       ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
