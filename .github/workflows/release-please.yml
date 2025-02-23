@@ -1,0 +1,80 @@
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  pull-requests: write
+
+name: Build, Test, and Release
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run release-please
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: simple
+          # Configura el título y la descripción del release
+          release-name: "Release ${{ github.ref }}"
+          release-body: "Automated release created by GitHub Actions"
+
+  build:
+    runs-on: ubuntu-latest
+    needs: release-please
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'  # Asegúrate de usar la versión de Java que requiere tu mod
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: mod-jars
+          path: build/libs/*.jar
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: mod-jars
+          path: build/libs
+
+      - name: Get release ID
+        id: get_release
+        run: |
+          RELEASE_ID=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.ref }}" \
+            | jq -r '.id')
+          echo "::set-output name=release_id::$RELEASE_ID"
+
+      - name: Upload JARs to Release
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.get_release.outputs.release_id }}/assets
+          asset_path: build/libs/*.jar
+          asset_name: mod-${{ github.ref }}.jar
+          asset_content_type: application/java-archive
