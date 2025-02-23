@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/Risinget/commander-mod/compare/v1.0.0...v1.1.0) (2025-02-23)
+
+
+### Features
+
+* enhance release workflow with build and artifact handling ([ce7bb10](https://www.github.com/Risinget/commander-mod/commit/ce7bb10b608edb5b61cde41d41ae5dce058521fe))
+
 ## 1.0.0 (2025-02-23)
 
 
