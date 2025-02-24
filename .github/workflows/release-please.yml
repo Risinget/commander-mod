@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - master  # Cambia a tu rama principal (main, master, etc.)
-  pull_request:
-    branches:
-      - master  # Ejecuta también en pull requests hacia la rama principal
 
 jobs:
   build:
@@ -50,7 +47,7 @@ jobs:
 
       - name: Release with release-please
         id: release
-        uses: google-github-actions/release-please-action@v2
+        uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: java  # Tipo de release
