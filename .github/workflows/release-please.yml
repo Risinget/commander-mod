@@ -73,13 +73,13 @@ jobs:
           if [[ "${{ env.TAG_EXISTS }}" == "true" ]]; then
             echo "Actualizando release existente..."
             gh release edit "v${{ env.VERSION }}" \
-              --title "Minecraft v${{ env.VERSION }} Release" \
-              --notes "Updated artifacts for v${{ env.VERSION }}\nNew features added!"
+              --title "v${{ env.VERSION }} 🚩" \
+              --notes-file release.md
           else
             echo "Creando nuevo release..."
             gh release create "v${{ env.VERSION }}" \
-              --title "Minecraft v${{ env.VERSION }} Release" \
-              --notes "Initial release for Minecraft v${{ env.VERSION }}"
+              --title "v${{ env.VERSION }} 🚩" \
+              --notes-file release.md
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
