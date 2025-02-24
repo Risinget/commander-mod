@@ -50,6 +50,8 @@ jobs:
         with:
           fetch-depth: 0  # Historial completo
 
+      - name: List files for debugging
+        run: ls -la
 
       - name: Release with release-please
         id: release
@@ -58,7 +60,8 @@ jobs:
           token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
           release-type: java  # Tipo de release
           package-name: risinget-commander  # Nombre de tu artefacto
-          config-file: ./release-please-config.json  # Archivo de configuración
+          debug: true
+          config-file: release-please-config.json  # Archivo de configuración
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
