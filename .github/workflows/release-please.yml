@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master  # Cambia a tu rama principal (main, master, etc.)
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   build:
