@@ -216,8 +216,8 @@ public class CommanderClient implements ClientModInitializer {
 					.build()
 					.generateScreen(client.currentScreen));
 
-				System.out.println("PANTALLA ANTES:");
-				System.out.println(client.currentScreen );
+				// System.out.println("PANTALLA ANTES:");
+				// System.out.println(client.currentScreen );
 			}
 
 			if (this.isConfigScreenOpen && !(client.currentScreen instanceof YACLScreen)) {
