@@ -4,17 +4,17 @@ on:
   push:
     branches:
       - master  # Cambia a tu rama principal (main, master, etc.)
+
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
   build:
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        # Usa estas versiones de Java
         java: [21]  # Versión LTS actual de Java
-    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -35,14 +35,14 @@ jobs:
         run: ./gradlew build
 
       - name: Capture build artifacts
-        if: ${{ matrix.java == '21' }}  # Solo subir artefactos construidos con la última versión de Java
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: Artifacts
           path: build/libs/
 
   release:
-    needs: build  # Depende del job de construcción
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -58,11 +58,30 @@ jobs:
         uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
-          release-type: simple  # Tipo de release
+          release-type: simple
           include-component-in-tag: false
-          config-file: release-please-config.json
+
+      - name: Leer versión de Minecraft
+        id: read_version
+        run: |
+          if [ -f version.txt ]; then
+            echo "minecraft_version=$(cat version.txt)" >> $GITHUB_ENV
+            echo "Versión de Minecraft: $(cat version.txt)"
+          else
+            echo "Error: No se encontró version.txt"
+            exit 1
+          fi
+
+      - name: Crear release con versión específica
+        run: |
+          gh release create "v${{ env.minecraft_version }}" \
+            --title "Minecraft ${{ env.minecraft_version }} Release" \
+            --notes "Release basado en Minecraft ${{ env.minecraft_version }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download build artifacts
+        if: success()
         uses: actions/download-artifact@v4
         with:
           name: Artifacts
@@ -72,8 +91,7 @@ jobs:
         run: ls -R build/libs/
 
       - name: Upload JAR files to release
-        if: ${{ steps.release.outputs.release_created }}  # Solo subir si se creó un release
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
         run: |
-          gh release upload ${{ steps.release.outputs.tag_name }} build/libs/*.jar
+          gh release upload "v${{ env.minecraft_version }}" build/libs/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
