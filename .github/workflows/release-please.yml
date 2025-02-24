@@ -61,22 +61,11 @@ jobs:
           release-type: simple
           include-component-in-tag: false
 
-      - name: Leer versión de Minecraft
-        id: read_version
-        run: |
-          if [ -f version.txt ]; then
-            echo "minecraft_version=$(cat version.txt)" >> $GITHUB_ENV
-            echo "Versión de Minecraft: $(cat version.txt)"
-          else
-            echo "Error: No se encontró version.txt"
-            exit 1
-          fi
-
       - name: Crear release con versión específica
         run: |
-          gh release create "v${{ env.minecraft_version }}" \
-            --title "Minecraft ${{ env.minecraft_version }} Release" \
-            --notes "Release basado en Minecraft ${{ env.minecraft_version }}"
+          gh release create "v1.21.4" \
+            --title "v1.21.4 Release" \
+            --notes "Added Gemini command /gemini <prompt>\n"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -92,6 +81,6 @@ jobs:
 
       - name: Upload JAR files to release
         run: |
-          gh release upload "v${{ env.minecraft_version }}" build/libs/*.jar
+          gh release upload "v1.21.4" build/libs/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
