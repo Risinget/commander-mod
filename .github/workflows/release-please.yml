@@ -60,6 +60,7 @@ jobs:
           token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
           release-type: java  # Tipo de release
           include-component-in-tag: false
+          config-file: release-please-config.json
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
