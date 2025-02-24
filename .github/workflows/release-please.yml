@@ -55,7 +55,7 @@ jobs:
         id: release
         uses: googleapis/release-please-action@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
           release-type: java  # Tipo de release
           package-name: risinget-commander  # Nombre de tu artefacto
 
@@ -71,6 +71,6 @@ jobs:
       - name: Upload JAR files to release
         if: ${{ steps.release.outputs.release_created }}  # Solo subir si se creó un release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
         run: |
           gh release upload ${{ steps.release.outputs.tag_name }} build/libs/*.jar
