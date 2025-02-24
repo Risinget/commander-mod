@@ -58,7 +58,7 @@ jobs:
         uses: googleapis/release-please-action@v4
         with:
           token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
-          release-type: java  # Tipo de release
+          release-type: simple  # Tipo de release
           include-component-in-tag: false
           config-file: release-please-config.json
 
