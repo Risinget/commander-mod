@@ -1,86 +1,72 @@
-name: Build and Release Workflow
+release:
+  needs: build
+  runs-on: ubuntu-latest
+  steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Historial completo
 
-on:
-  push:
-    branches:
-      - master  # Cambia a tu rama principal (main, master, etc.)
+    - name: Leer versión de Minecraft
+      id: read_version
+      run: |
+        VERSION=$(cat version.txt)
+        echo "Minecraft Version: $VERSION"
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-permissions:
-  contents: write
-  pull-requests: write
+    - name: Verificar si el tag ya existe
+      id: check_tag
+      run: |
+        if gh release view "v${{ env.VERSION }}" > /dev/null 2>&1; then
+          echo "TAG_EXISTS=true" >> $GITHUB_ENV
+        else
+          echo "TAG_EXISTS=false" >> $GITHUB_ENV
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-jobs:
-  build:
-    runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        java: [21]  # Versión LTS actual de Java
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Crear o actualizar release
+      run: |
+        if [[ "${{ env.TAG_EXISTS }}" == "true" ]]; then
+          echo "Actualizando release existente..."
+          gh release edit "v${{ env.VERSION }}" \
+            --title "Minecraft v${{ env.VERSION }} Release" \
+            --notes "Updated artifacts for v${{ env.VERSION }}\nNew features added!"
+        else
+          echo "Creando nuevo release..."
+          gh release create "v${{ env.VERSION }}" \
+            --title "Minecraft v${{ env.VERSION }} Release" \
+            --notes "Initial release for Minecraft v${{ env.VERSION }}"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v2
+    - name: Download build artifacts
+      if: success()
+      uses: actions/download-artifact@v4
+      with:
+        name: Artifacts
+        path: build/libs/
 
-      - name: Set up JDK ${{ matrix.java }}
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ matrix.java }}
-          distribution: 'microsoft'
+    - name: List downloaded files (debug)
+      run: ls -R build/libs/
 
-      - name: Make Gradle Wrapper executable
-        run: chmod +x ./gradlew
+    - name: Eliminar archivos anteriores del release (si existen)
+      run: |
+        ASSETS=$(gh release view "v${{ env.VERSION }}" --json assets --jq '.assets[].name' || echo "")
+        if [[ -n "$ASSETS" ]]; then
+          echo "Eliminando archivos existentes..."
+          for asset in $ASSETS; do
+            gh release delete-asset "v${{ env.VERSION }}" "$asset" --yes
+          done
+        else
+          echo "No hay archivos previos para eliminar."
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and test
-        run: ./gradlew build
-
-      - name: Capture build artifacts
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Artifacts
-          path: build/libs/
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Historial completo
-
-      - name: List files for debugging
-        run: ls -la
-
-      - name: Release with release-please
-        id: release
-        uses: googleapis/release-please-action@v4
-        with:
-          token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
-          release-type: simple
-          include-component-in-tag: false
-
-      - name: Crear release con versión específica
-        run: |
-          gh release create "v1.21.4" \
-            --title "v1.21.4 Release" \
-            --notes "Added Gemini command /gemini <prompt>\n"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Download build artifacts
-        if: success()
-        uses: actions/download-artifact@v4
-        with:
-          name: Artifacts
-          path: build/libs/
-
-      - name: List downloaded files (debug)
-        run: ls -R build/libs/
-
-      - name: Upload JAR files to release
-        run: |
-          gh release upload "v1.21.4" build/libs/*.jar
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload JAR files to release
+      run: |
+        gh release upload "v${{ env.VERSION }}" build/libs/*.jar --clobber
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
