@@ -47,6 +47,9 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Historial completo
+
 
       - name: Release with release-please
         id: release
@@ -54,6 +57,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: java  # Tipo de release
+          package-name: risinget-commander  # Nombre de tu artefacto
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
