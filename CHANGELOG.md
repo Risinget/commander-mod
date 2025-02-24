@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/Risinget/commander-mod/compare/v1.4.0...v1.5.0) (2025-02-24)
+
+
+### Features
+
+* simple version ([7e84e98](https://github.com/Risinget/commander-mod/commit/7e84e98b8935c4d8af81a1b57c755c423dadf3c8))
+
 ## [1.4.0](https://github.com/Risinget/commander-mod/compare/v1.3.0...v1.4.0) (2025-02-24)
 
 
