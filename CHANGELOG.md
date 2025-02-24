@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/Risinget/commander-mod/compare/v1.2.0...v1.3.0) (2025-02-24)
+
+
+### Features
+
+* add debug step to list downloaded files in release workflow ([10dc681](https://github.com/Risinget/commander-mod/commit/10dc6811e96e9b2a6a134c175e1f7dfb7eaf7072))
+* enable workflow for pull requests to master branch ([6bf50da](https://github.com/Risinget/commander-mod/commit/6bf50da176afe24b1f7b75d380c74838dbc8c8d9))
+
 ## [1.2.0](https://www.github.com/Risinget/commander-mod/compare/v1.1.0...v1.2.0) (2025-02-23)
 
 
