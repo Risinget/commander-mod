@@ -42,74 +42,74 @@ jobs:
           path: build/libs/
 
   release:
-  needs: build
-  runs-on: ubuntu-latest
-  steps:
-    - name: Check out code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Historial completo
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Historial completo
 
-    - name: Leer versión de Minecraft
-      id: read_version
-      run: |
-        VERSION=$(cat version.txt)
-        echo "Minecraft Version: $VERSION"
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Leer versión de Minecraft
+        id: read_version
+        run: |
+          VERSION=$(cat version.txt)
+          echo "Minecraft Version: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-    - name: Verificar si el tag ya existe
-      id: check_tag
-      run: |
-        if gh release view "v${{ env.VERSION }}" > /dev/null 2>&1; then
-          echo "TAG_EXISTS=true" >> $GITHUB_ENV
-        else
-          echo "TAG_EXISTS=false" >> $GITHUB_ENV
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verificar si el tag ya existe
+        id: check_tag
+        run: |
+          if gh release view "v${{ env.VERSION }}" > /dev/null 2>&1; then
+            echo "TAG_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_ENV
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Crear o actualizar release
-      run: |
-        if [[ "${{ env.TAG_EXISTS }}" == "true" ]]; then
-          echo "Actualizando release existente..."
-          gh release edit "v${{ env.VERSION }}" \
-            --title "Minecraft v${{ env.VERSION }} Release" \
-            --notes "Updated artifacts for v${{ env.VERSION }}\nNew features added!"
-        else
-          echo "Creando nuevo release..."
-          gh release create "v${{ env.VERSION }}" \
-            --title "Minecraft v${{ env.VERSION }} Release" \
-            --notes "Initial release for Minecraft v${{ env.VERSION }}"
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Crear o actualizar release
+        run: |
+          if [[ "${{ env.TAG_EXISTS }}" == "true" ]]; then
+            echo "Actualizando release existente..."
+            gh release edit "v${{ env.VERSION }}" \
+              --title "Minecraft v${{ env.VERSION }} Release" \
+              --notes "Updated artifacts for v${{ env.VERSION }}\nNew features added!"
+          else
+            echo "Creando nuevo release..."
+            gh release create "v${{ env.VERSION }}" \
+              --title "Minecraft v${{ env.VERSION }} Release" \
+              --notes "Initial release for Minecraft v${{ env.VERSION }}"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Download build artifacts
-      if: success()
-      uses: actions/download-artifact@v4
-      with:
-        name: Artifacts
-        path: build/libs/
+      - name: Download build artifacts
+        if: success()
+        uses: actions/download-artifact@v4
+        with:
+          name: Artifacts
+          path: build/libs/
 
-    - name: List downloaded files (debug)
-      run: ls -R build/libs/
+      - name: List downloaded files (debug)
+        run: ls -R build/libs/
 
-    - name: Eliminar archivos anteriores del release (si existen)
-      run: |
-        ASSETS=$(gh release view "v${{ env.VERSION }}" --json assets --jq '.assets[].name' || echo "")
-        if [[ -n "$ASSETS" ]]; then
-          echo "Eliminando archivos existentes..."
-          for asset in $ASSETS; do
-            gh release delete-asset "v${{ env.VERSION }}" "$asset" --yes
-          done
-        else
-          echo "No hay archivos previos para eliminar."
-        fi
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Eliminar archivos anteriores del release (si existen)
+        run: |
+          ASSETS=$(gh release view "v${{ env.VERSION }}" --json assets --jq '.assets[].name' || echo "")
+          if [[ -n "$ASSETS" ]]; then
+            echo "Eliminando archivos existentes..."
+            for asset in $ASSETS; do
+              gh release delete-asset "v${{ env.VERSION }}" "$asset" --yes
+            done
+          else
+            echo "No hay archivos previos para eliminar."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Upload JAR files to release
-      run: |
-        gh release upload "v${{ env.VERSION }}" build/libs/*.jar --clobber
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload JAR files to release
+        run: |
+          gh release upload "v${{ env.VERSION }}" build/libs/*.jar --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
