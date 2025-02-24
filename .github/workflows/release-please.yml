@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - master  # Cambia a tu rama principal (main, master, etc.)
-  # pull_request:
-  #   branches:
-  #     - master  # Ejecuta también en pull requests hacia la rama principal
+  pull_request:
+    branches:
+      - master  # Ejecuta también en pull requests hacia la rama principal
 
 jobs:
   build:
