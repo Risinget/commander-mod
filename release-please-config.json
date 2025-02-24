@@ -1,4 +1,5 @@
 {
-    "release-as": "1.2.3",
-    "include-component-in-tag": false
-}
+    "release-type": "java",
+    "bump-minor-pre-major": true,
+    "bump-patch-for-minor-pre-major": true
+  }
