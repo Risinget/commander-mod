@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/Risinget/commander-mod/compare/v1.3.0...v1.4.0) (2025-02-24)
+
+
+### Features
+
+* version custom added ([8bcff1d](https://github.com/Risinget/commander-mod/commit/8bcff1d9f04f01c8acbcdfb470582c85ef2ac8fc))
+
+
+### Bug Fixes
+
+* minecraft version ([9efb50d](https://github.com/Risinget/commander-mod/commit/9efb50d17a12e0d5bd2e9503fe34edb50e10f4e4))
+
 ## [1.3.0](https://github.com/Risinget/commander-mod/compare/v1.2.0...v1.3.0) (2025-02-24)
 
 
