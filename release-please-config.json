@@ -1,5 +1,5 @@
 {
-    "release-type": "java",
+    "release-as": "1.21.5",
     "bump-minor-pre-major": true,
     "bump-patch-for-minor-pre-major": true
-  }
+}
