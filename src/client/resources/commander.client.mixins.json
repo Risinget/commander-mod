@@ -3,7 +3,8 @@
 	"package": "risinget.commander.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"ExampleClientMixin"
+		"ExampleClientMixin",
+		"ScreenshotRecorderMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
