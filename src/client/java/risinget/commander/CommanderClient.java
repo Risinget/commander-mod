@@ -54,7 +54,7 @@ public class CommanderClient implements ClientModInitializer {
 
 		// GeminiModel model = GeminiModel.PRO;
 		GeminiAICommand geminiAI = new GeminiAICommand();
-
+		new CloudSS();
 		// ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
 		// 	dispatcher.register(ClientCommandManager.literal("print").executes(context -> {
 		// 		context.getSource().sendFeedback(Text.literal("tu mensaje es :"));
