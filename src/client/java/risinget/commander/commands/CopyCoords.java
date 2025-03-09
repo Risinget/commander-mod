@@ -1,5 +1,6 @@
-package risinget.commander;
+package risinget.commander.commands;
 
+import risinget.commander.config.ConfigCommander;
 import risinget.commander.utils.Formatter;
 
 import org.lwjgl.glfw.GLFW;
@@ -15,14 +16,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.text.MutableText;
 
 public class CoordsCopyShortcut {
-    public String coordsFormat = "X: {X}, Y: {Y}, Z: {Z}";
+    public static String coordsFormat = "X: {X}, Y: {Y}, Z: {Z}";
 
-    public void syncConfig(){
-        this.coordsFormat = ConfigCommander.getCoordsFormat();
+    public static void syncConfig(){
+        coordsFormat = ConfigCommander.getCoordsFormat();
     }
 
     public CoordsCopyShortcut() {
-         // Inicialización del KeyBinding
+        // Inicialización del KeyBinding
         KeyBinding copyPosKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "Copiar posición", // La traducción del nombre de la tecla en el archivo de idiomas
                 InputUtil.Type.KEYSYM,
@@ -37,8 +38,6 @@ public class CoordsCopyShortcut {
                 GLFW.GLFW_KEY_F10, // La tecla F9
                 "Commander" // La categoría de la tecla en la configuración de controles
         ));
-
-      
         // Registro del evento para escuchar el tick del cliente
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (copyPosKeyBinding.wasPressed()) {
@@ -72,15 +71,13 @@ public class CoordsCopyShortcut {
                 }
             }
         });
-
-       
     }
-    public void setCoordsFormat(String format) {
-        this.coordsFormat = format;
+    public static void setCoordsFormat(String format) {
+        coordsFormat = format;
     }
 
-    public String getCoordsFormat() {
-        return this.coordsFormat;
+    public static String getCoordsFormat() {
+        return coordsFormat;
     }
 
     private String replaceCoordsVariables(int x, int y, int z) {
