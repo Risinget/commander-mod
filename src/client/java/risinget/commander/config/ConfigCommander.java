@@ -7,6 +7,7 @@ import net.minecraft.util.Identifier;
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
+import risinget.commander.enums.GeminiModel;
 
 public class ConfigCommander {
 

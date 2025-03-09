@@ -1,20 +1,21 @@
-package risinget.commander;
+package risinget.commander.events;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
+import risinget.commander.config.ConfigCommander;
 
-public class PlayerAutoDisconnect {
-	public boolean isOn;
-	public int healthMin;
+public static class PlayerAutoDisconnect {
+	public static boolean isOn;
+	public static int healthMin;
 
-	public void syncConfig(){
+	public static void syncConfig(){
 		this.isOn = ConfigCommander.getOn();
 		this.healthMin = ConfigCommander.getHealthMin();
 	}
 
-    public PlayerAutoDisconnect(){
+    public static PlayerAutoDisconnect(){
 
 		// Registrar un evento que se dispare al entrar a un mundo
 		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
@@ -34,23 +35,23 @@ public class PlayerAutoDisconnect {
 			}
 		});
     }
-	public void setHealthMin(int healthMin){
-		this.healthMin = healthMin;
+	public static void setHealthMin(int health){
+		healthMin = health;
 	}
 
-	public int getHealthMin(){
-		return this.healthMin;
+	public static int getHealthMin(){
+		return healthMin;
 	}
 
-	public boolean getOn(){
-		return this.isOn;
-	}
-
-	public boolean isOn() {
+	public static boolean getOn(){
 		return isOn;
 	}
 
-	public void setOn(boolean isOn) {
-		this.isOn = isOn;
+	public static boolean isOn() {
+		return isOn;
+	}
+
+	public static void setOn(boolean value) {
+		isOn = value;
 	}
 }
