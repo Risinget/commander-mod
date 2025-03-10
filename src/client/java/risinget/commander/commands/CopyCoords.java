@@ -1,5 +1,6 @@
-package risinget.commander;
+package risinget.commander.commands;
 
+import risinget.commander.config.ConfigCommander;
 import risinget.commander.utils.Formatter;
 
 import org.lwjgl.glfw.GLFW;
@@ -14,15 +15,10 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.text.MutableText;
 
-public class CoordsCopyShortcut {
-    public String coordsFormat = "X: {X}, Y: {Y}, Z: {Z}";
+public class CopyCoords {
 
-    public void syncConfig(){
-        this.coordsFormat = ConfigCommander.getCoordsFormat();
-    }
-
-    public CoordsCopyShortcut() {
-         // Inicialización del KeyBinding
+    public CopyCoords() {
+        // Inicialización del KeyBinding
         KeyBinding copyPosKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "Copiar posición", // La traducción del nombre de la tecla en el archivo de idiomas
                 InputUtil.Type.KEYSYM,
@@ -37,8 +33,6 @@ public class CoordsCopyShortcut {
                 GLFW.GLFW_KEY_F10, // La tecla F9
                 "Commander" // La categoría de la tecla en la configuración de controles
         ));
-
-      
         // Registro del evento para escuchar el tick del cliente
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (copyPosKeyBinding.wasPressed()) {
@@ -50,8 +44,7 @@ public class CoordsCopyShortcut {
                     String pos = replaceCoordsVariables(posX, posY, posZ);
 
                     client.keyboard.setClipboard(pos); // Use Minecraft's method to set clipboard content
-                    Formatter formatter = new Formatter();
-                    MutableText text = formatter.parseAndFormatText("&b&oCoords de posición copiadas");
+                    MutableText text = Formatter.parseAndFormatText("&b&oCoords de posición copiadas");
                     // client.player.sendMessage(Text.of("Coords de posición copiadas"), true);
                     client.player.sendMessage(text, true);
 
@@ -72,19 +65,10 @@ public class CoordsCopyShortcut {
                 }
             }
         });
-
-       
-    }
-    public void setCoordsFormat(String format) {
-        this.coordsFormat = format;
-    }
-
-    public String getCoordsFormat() {
-        return this.coordsFormat;
     }
 
     private String replaceCoordsVariables(int x, int y, int z) {
-        return this.coordsFormat.replace("{X}", String.valueOf(x))
+        return ConfigCommander.getCoordsFormat().replace("{X}", String.valueOf(x))
                 .replace("{Y}", String.valueOf(y))
                 .replace("{Z}", String.valueOf(z));
     }
