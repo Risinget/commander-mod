@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import risinget.commander.commands.*;
 import risinget.commander.config.ConfigCommander;
 import risinget.commander.events.AutoDisconnect;
+import risinget.commander.events.HistoryChat;
 import risinget.commander.keybinds.CoordsConverter;
 import risinget.commander.gui.ScreenGUI;
 public class CommanderClient implements ClientModInitializer {
@@ -47,6 +48,8 @@ public class CommanderClient implements ClientModInitializer {
 		new Commands();
 		new GeminiAICommand();
 		new CloudSS();
+
+		new HistoryChat();
 
 		// Inicialización del KeyBinding
 		KeyBinding openGUIYacl = KeyBindingHelper.registerKeyBinding(new KeyBinding(
