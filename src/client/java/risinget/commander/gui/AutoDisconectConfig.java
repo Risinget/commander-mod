@@ -8,7 +8,6 @@ import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import net.minecraft.text.Text;
 import risinget.commander.config.ConfigCommander;
-import risinget.commander.events.AutoDisconnect;
 
 public class AutoDisconectConfig {
 

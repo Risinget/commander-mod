@@ -38,8 +38,7 @@ public class DaysToTime {
                             "&7Tiempo transcurrido en la vida real:&b " + hours + " horas\n" +
                             "&7El mundo se ha iniciado el:&b " + fechaEstimada;
                     
-                    Formatter format = new Formatter();  
-                    MutableText textColored = format.parseAndFormatText(message);     
+                    MutableText textColored = Formatter.parseAndFormatText(message);
                     
                     // Enviar el mensaje al jugador
                     context.getSource().sendFeedback(textColored);
