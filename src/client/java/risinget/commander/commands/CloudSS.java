@@ -1,4 +1,4 @@
-package risinget.commander;
+package risinget.commander.commands;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
@@ -13,18 +13,7 @@ import java.nio.file.Path;
 import net.minecraft.client.MinecraftClient;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.NativeImage;
-import net.minecraft.client.util.ScreenshotRecorder;
-import net.minecraft.text.Text;
-
-import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import com.cloudinary.*;
 import com.cloudinary.utils.ObjectUtils;
@@ -47,7 +36,7 @@ public class CloudSS {
             );
 
             // Upload the image (for testing purposes)
-            Map<String, Object> params1 = ObjectUtils.asMap(
+            Map<String, Object> params1 = Map.of(
                     "use_filename", true,
                     "unique_filename", false,
                     "overwrite", true

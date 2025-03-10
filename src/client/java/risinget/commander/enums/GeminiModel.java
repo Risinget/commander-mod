@@ -1,4 +1,4 @@
-package risinget.commander;
+package risinget.commander.enums;
 
 import dev.isxander.yacl3.api.NameableEnum;
 import net.minecraft.text.Text;

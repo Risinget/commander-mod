@@ -8,9 +8,9 @@ import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import net.minecraft.text.Text;
 import risinget.commander.config.ConfigCommander;
-import risinget.commander.events.PlayerAutoDisconnect;
+import risinget.commander.events.AutoDisconnect;
 
-public class AutoDisconect {
+public class AutoDisconectConfig {
 
     public static ConfigCategory category(){
         return ConfigCategory.createBuilder()
@@ -22,22 +22,16 @@ public class AutoDisconect {
                     .option(Option.<Boolean>createBuilder()
                             .name(Text.of("Activar desconexión automática"))
                             .description(OptionDescription.of(Text.of("Habilitar o deshabilitar la desconexión automática.")))
-                            .binding(ConfigCommander.getOn(), () -> ConfigCommander.getOn(), newVal -> {
-                                ConfigCommander.setOn(newVal);
-                                PlayerAutoDisconnect.setOn(newVal);
-                            })
+                            .binding(ConfigCommander.DEFAULT_ACTIVAR_DESCONEXION, ConfigCommander::getOn, ConfigCommander::setOn)
                             .controller(TickBoxControllerBuilder::create)
                             .build())
                     .option(Option.<String>createBuilder()
                             .name(Text.of("Desconectarse al tener menor vida que"))
                             .description(OptionDescription.of(Text.of(
                                     "Determina la cantidad de vida que el jugador debe tener para desconectarse automáticamente.")))
-                            .binding( String.valueOf(ConfigCommander.getHealthMin()) ,
+                            .binding( String.valueOf(ConfigCommander.DEFAULT_DESCONECTAR_MENOR_VIDA_QUE) ,
                                     () -> String.valueOf(ConfigCommander.getHealthMin()) ,
-                                    newVal -> {
-                                        ConfigCommander.setHealthMin(Integer.parseInt(newVal));
-                                        PlayerAutoDisconnect.setHealthMin(Integer.parseInt(newVal));
-                                    })
+                                    newVal -> ConfigCommander.setHealthMin(Integer.parseInt(newVal)))
                             .controller(StringControllerBuilder::create)
                             .build())
                     .build())

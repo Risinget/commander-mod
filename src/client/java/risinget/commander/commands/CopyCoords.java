@@ -15,14 +15,9 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.text.MutableText;
 
-public class CoordsCopyShortcut {
-    public static String coordsFormat = "X: {X}, Y: {Y}, Z: {Z}";
+public class CopyCoords {
 
-    public static void syncConfig(){
-        coordsFormat = ConfigCommander.getCoordsFormat();
-    }
-
-    public CoordsCopyShortcut() {
+    public CopyCoords() {
         // Inicialización del KeyBinding
         KeyBinding copyPosKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "Copiar posición", // La traducción del nombre de la tecla en el archivo de idiomas
@@ -49,8 +44,7 @@ public class CoordsCopyShortcut {
                     String pos = replaceCoordsVariables(posX, posY, posZ);
 
                     client.keyboard.setClipboard(pos); // Use Minecraft's method to set clipboard content
-                    Formatter formatter = new Formatter();
-                    MutableText text = formatter.parseAndFormatText("&b&oCoords de posición copiadas");
+                    MutableText text = Formatter.parseAndFormatText("&b&oCoords de posición copiadas");
                     // client.player.sendMessage(Text.of("Coords de posición copiadas"), true);
                     client.player.sendMessage(text, true);
 
@@ -72,16 +66,9 @@ public class CoordsCopyShortcut {
             }
         });
     }
-    public static void setCoordsFormat(String format) {
-        coordsFormat = format;
-    }
-
-    public static String getCoordsFormat() {
-        return coordsFormat;
-    }
 
     private String replaceCoordsVariables(int x, int y, int z) {
-        return this.coordsFormat.replace("{X}", String.valueOf(x))
+        return ConfigCommander.getCoordsFormat().replace("{X}", String.valueOf(x))
                 .replace("{Y}", String.valueOf(y))
                 .replace("{Z}", String.valueOf(z));
     }

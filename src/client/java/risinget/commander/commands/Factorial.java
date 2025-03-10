@@ -1,4 +1,4 @@
-package risinget.commander;
+package risinget.commander.commands;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 
