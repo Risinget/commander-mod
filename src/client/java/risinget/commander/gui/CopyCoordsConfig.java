@@ -5,15 +5,13 @@ import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
-import risinget.commander.commands.CoordsCopyShortcut;
+import risinget.commander.commands.CopyCoords;
 import risinget.commander.config.ConfigCommander;
 
-public class CopyCoords {
+public class CopyCoordsConfig {
 
-    public ConfigCategory category(MinecraftClient client){
+    public static ConfigCategory category(){
         return ConfigCategory.createBuilder()
             .name(Text.of("Coords Copy"))
             .tooltip(Text.of("Configuraciones para Coords Copy"))
@@ -25,12 +23,9 @@ public class CopyCoords {
                             .name(Text.of("Coords Format"))
                             .description(OptionDescription.of(Text.of(
                                     "Hay tres variables X, Y y Z que se pueden usar en el formato de coordenadas. Estas variables se reemplazarán por las coordenadas del jugador.")))
-                            .binding(ConfigCommander.getCoordsFormat(),
-                                    () -> ConfigCommander.getCoordsFormat(),
-                                    newVal -> {
-                                        ConfigCommander.setCoordsFormat(newVal);
-                                        CoordsCopyShortcut.setCoordsFormat(newVal);
-                                    })
+                            .binding(ConfigCommander.DEFAULT_COORDS_FORMAT,
+                                    ConfigCommander::getCoordsFormat,
+                                    ConfigCommander::setCoordsFormat)
                             .controller(StringControllerBuilder::create)
                             .build())
                     .build())

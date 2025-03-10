@@ -1,4 +1,4 @@
-package risinget.commander;
+package risinget.commander.commands;
 
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
