@@ -3,6 +3,7 @@ package risinget.commander.commands;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.text.Text;
 import net.minecraft.client.util.ScreenshotRecorder;
 import java.io.File;
@@ -26,38 +27,9 @@ public class CloudSS {
                 .executes(this::executeScreenshotCommand));
     }
     private int executeScreenshotCommand(CommandContext<FabricClientCommandSource> context) {
-        try {
-            MinecraftClient client = MinecraftClient.getInstance();
-            File gameDirectory = client.runDirectory;
-            Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-                    "cloud_name", "dgggg",
-                    "api_key", "gaaaaa",
-                    "api_secret", "Qgrx6CK9cSgHQ5t3Dw5qJZ8pcYM")
-            );
-
-            // Upload the image (for testing purposes)
-            Map<String, Object> params1 = Map.of(
-                    "use_filename", true,
-                    "unique_filename", false,
-                    "overwrite", true
-            );
-
-            System.out.println(cloudinary.uploader().upload(
-                    "https://cloudinary-devs.github.io/cld-docs-assets/assets/images/coffee_cup.jpg",
-                    params1
-            ));
-
-            // Take and save the screenshot
-            ScreenshotRecorder.saveScreenshot(gameDirectory, null, client.getFramebuffer(), (text) -> {
-                client.execute(() -> {
-                    client.player.sendMessage(Text.of("Captura de pantalla guardada: " + text.getString()), false);
-                });
-            });
-
-        } catch (IOException e) {
-            e.printStackTrace(); // Log the error
-            return 0; // Return 0 to indicate failure
-        }
+        // Registra ambos eventos
+//        InGameHud ingame = new InGameHud();
+//        System.out.println(ingame.getTextRenderer());
 
         return 1; // Return 1 to indicate success
     }
