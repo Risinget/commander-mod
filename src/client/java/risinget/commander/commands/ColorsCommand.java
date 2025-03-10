@@ -1,19 +1,12 @@
 package risinget.commander.commands;
 
 import risinget.commander.utils.Formatter;
-import risinget.commander.utils.Prefix;
-
-import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-
-import java.text.Format;
 
 public class ColorsCommand {
 

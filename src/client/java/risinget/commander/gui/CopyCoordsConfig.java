@@ -6,7 +6,6 @@ import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import net.minecraft.text.Text;
-import risinget.commander.commands.CopyCoords;
 import risinget.commander.config.ConfigCommander;
 
 public class CopyCoordsConfig {
