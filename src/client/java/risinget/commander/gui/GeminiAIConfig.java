@@ -7,7 +7,6 @@ import dev.isxander.yacl3.api.OptionGroup;
 import dev.isxander.yacl3.api.controller.EnumControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import net.minecraft.text.Text;
-import risinget.commander.commands.GeminiAICommand;
 import risinget.commander.config.ConfigCommander;
 import risinget.commander.enums.GeminiModel;
 
