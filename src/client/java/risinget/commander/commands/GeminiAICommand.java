@@ -1,4 +1,4 @@
-package risinget.commander;
+package risinget.commander.commands;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,65 +19,37 @@ import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import risinget.commander.config.ConfigCommander;
 import risinget.commander.utils.Formatter;
 import risinget.commander.utils.Prefix;
 
 public class GeminiAICommand {
   
-
-    private GeminiModel selectedModel = GeminiModel.PRO;
-    public String API_KEY = "inserta tu API-KEY aqui";
-
-    public GeminiModel getSelectedModel() {
-        return this.selectedModel;
-    }
-    public void setSelectedModel(GeminiModel model) {
-        this.selectedModel = model;
-    }
-
-    public String getApiKey(){
-        return this.API_KEY;
-    }
-
-    public void setApiKey(String API_KEY){
-       this.API_KEY = API_KEY;
-    }
-
-    public void syncConfig(){
-      this.API_KEY = ConfigCommander.getApiKey();
-      this.selectedModel = ConfigCommander.getSelectedModel();
-    }
-
-
     public GeminiAICommand(){
       ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(ClientCommandManager.literal("gemini")
                 .then(ClientCommandManager.argument("prompt", StringArgumentType.greedyString())
                     .executes(context -> {
                         String prompt = StringArgumentType.getString(context, "prompt");
-                        CompletableFuture<String> futureResponse = this.sendRequestAndGetResponse(prompt);
-                        
+                        CompletableFuture<String> futureResponse = sendRequestAndGetResponse(prompt);
                         futureResponse.thenAccept(response -> {
                           System.out.println("Respuesta: " + response);
                           String outputWithText = Prefix.COMMANDER + " &7GeminiAI:&r "+response;
-                          Formatter formatter = new Formatter();
-                          MutableText feedbackText = formatter.parseAndFormatText(outputWithText)
-                                          .styled(style -> style
-                                          .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))
-                                          .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, response.toString())));
+                          MutableText feedbackText = Formatter.parseAndFormatText(outputWithText)
+                              .styled(style -> style
+                              .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))
+                              .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, response)));
                           context.getSource().sendFeedback(feedbackText);
                         }).exceptionally(ex -> {
                           System.err.println("Error: " + ex.getMessage());
                           String outputWithText = Prefix.COMMANDER + " &7Sucedió un error ): :&r "+ex.getMessage();
-                          Formatter formatter = new Formatter();
-                          MutableText feedbackText = formatter.parseAndFormatText(outputWithText)
-                                          .styled(style -> style
-                                          .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))
-                                          .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, ex.getMessage().toString())));
+                          MutableText feedbackText = Formatter.parseAndFormatText(outputWithText)
+                              .styled(style -> style
+                              .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))
+                              .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, ex.getMessage())));
                           context.getSource().sendFeedback(feedbackText);
                           return null;
                         });
-                        
                         return 1;
                     })
                 )
@@ -85,14 +57,10 @@ public class GeminiAICommand {
         });
     }
 
-
-    public CompletableFuture<String> sendRequestAndGetResponse(String prompt) {
+    public static CompletableFuture<String> sendRequestAndGetResponse(String prompt) {
       return CompletableFuture.supplyAsync(() -> {
-
-
         // URL de la API
-        String url = "https://generativelanguage.googleapis.com/v1beta/models/"+this.selectedModel.getModelName()+":generateContent?key=" + this.API_KEY;
-
+        String url = "https://generativelanguage.googleapis.com/v1beta/models/"+ConfigCommander.getSelectedModel()+":generateContent?key=" + ConfigCommander.getApiKeyGemini();
         // Cuerpo de la solicitud en formato JSON
         String jsonBody = String.format(
           """

@@ -1,4 +1,4 @@
-package risinget.commander;
+package risinget.commander.keybinds;
 
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;

@@ -1,4 +1,5 @@
-package risinget.commander;
+package risinget.commander.commands;
+import org.jetbrains.annotations.NotNull;
 import risinget.commander.utils.Formatter;
 import risinget.commander.utils.Prefix;
 
@@ -17,6 +18,37 @@ import net.minecraft.text.Text;
 public class SmallCapsConverter {
 
     public void converter() {
+        Map<Character, Character> diccionario = getDiccionario();
+
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("smallcaps")
+            .then(ClientCommandManager.argument("texto", StringArgumentType.greedyString())
+                .executes(context -> {
+                    String texto = StringArgumentType.getString(context, "texto");
+                    StringBuilder textoConvertido = new StringBuilder();
+
+                    for (char c : texto.toCharArray()) {
+                        if (diccionario.containsKey(c)) {
+                            textoConvertido.append(diccionario.get(c));
+                        } else if (diccionario.containsKey(Character.toUpperCase(c))) {
+                            textoConvertido.append(diccionario.get(Character.toUpperCase(c)));
+                        } else {
+                            textoConvertido.append(c);
+                        }
+                    }
+                    String outputWithText = Prefix.COMMANDER + "&7Tu texto convertido es:&r "+ textoConvertido;
+                    MutableText feedbackText = Formatter.parseAndFormatText(outputWithText)
+                                    .styled(style -> style
+                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))
+                                    .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, textoConvertido.toString())));
+                    context.getSource().sendFeedback(feedbackText);
+                    return 1;
+                })
+            )
+        ));
+
+    }
+
+    private static @NotNull Map<Character, Character> getDiccionario() {
         Map<Character, Character> diccionario = new HashMap<>();
 
         diccionario.put('A', 'ᴀ');
@@ -46,40 +78,7 @@ public class SmallCapsConverter {
         diccionario.put('X', 'x');
         diccionario.put('Y', 'ʏ');
         diccionario.put('Z', 'ᴢ');
-
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("smallcaps")
-                .then(ClientCommandManager.argument("texto", StringArgumentType.greedyString())
-                    .executes(context -> {
-                        String texto = StringArgumentType.getString(context, "texto");
-                        StringBuilder textoConvertido = new StringBuilder();
-
-                        for (char c : texto.toCharArray()) {
-                            if (diccionario.containsKey(c)) {
-                                textoConvertido.append(diccionario.get(c));
-                            } else if (diccionario.containsKey(Character.toUpperCase(c))) {
-                                textoConvertido.append(diccionario.get(Character.toUpperCase(c)));
-                            } else {
-                                textoConvertido.append(c);
-                            }
-                        }
-
-                        String outputWithText = Prefix.COMMANDER + "&7Tu texto convertido es:&r "+ textoConvertido;
-
-                        Formatter formatter = new Formatter();
-                        MutableText feedbackText = formatter.parseAndFormatText(outputWithText)
-                                        .styled(style -> style
-                                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))
-                                        .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, textoConvertido.toString())));
-
-                        context.getSource().sendFeedback(feedbackText);
-                        return 1;
-                        
-                    })
-                )
-            );
-        });
-
+        return diccionario;
     }
 
 }
