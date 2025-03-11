@@ -14,4 +14,10 @@ public class InitConfigurationMixin {
     private void init(CallbackInfo info) {
         ConfigCommander.HANDLER.load();
     }
+
+
+    @Inject(at = @At("RETURN"), method = "joinWorld")
+    private void onWorldLoaded(CallbackInfo info) {
+
+    }
 }

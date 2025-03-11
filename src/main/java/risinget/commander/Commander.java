@@ -15,16 +15,19 @@ import risinget.commander.commands.*;
 import risinget.commander.config.ConfigCommander;
 import risinget.commander.events.AutoDisconnect;
 import risinget.commander.events.HistoryChat;
-import risinget.commander.keybinds.CoordsConverter;
+import risinget.commander.core.CoordsConverter;
 import risinget.commander.gui.ScreenGUI;
+import risinget.commander.keybinds.KeyHandler;
 public class Commander implements ClientModInitializer {
 
-	private static final Logger log = LoggerFactory.getLogger(Commander.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Commander.class);
 	private boolean isConfigScreenOpen = false;
 
 	@Override
 	public void onInitializeClient() {
+		KeyHandler.registerKeybinds(); // Registra los keybinds en el menú de controles
 
+		LOGGER.info("BVXD");
 		SmallCapsConverter smallCapsConverter = new SmallCapsConverter();
 		smallCapsConverter.converter();
 

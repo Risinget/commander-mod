@@ -1,4 +1,4 @@
-package risinget.commander.keybinds;
+package risinget.commander.core;
 
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -12,30 +12,23 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
-
-import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.client.MinecraftClient;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWKeyCallback;
 public class CoordsConverter {
+    private static boolean gPressed = false;
 
-//    private static GLFWKeyCallback keyCallback;
-//    private void registerKeyCallback() {
-//        long window = MinecraftClient.getInstance().getWindow().getHandle();
-//
-//        keyCallback = new GLFWKeyCallback() {
-//            @Override
-//            public void invoke(long win, int key, int scancode, int action, int mods) {
-//                if (key == GLFW.GLFW_KEY_G && action == GLFW.GLFW_PRESS) {
-//                    System.out.println("¡Tecla G presionada!");
-//                }
-//                if (key == GLFW.GLFW_KEY_G && action == GLFW.GLFW_RELEASE) {
-//                    System.out.println("¡Tecla G soltada!");
-//                }
-//            }
-//        };
-//        GLFW.glfwSetKeyCallback(window, keyCallback);
-//    }
+    public static void registerKeyCallback() {
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            long window = MinecraftClient.getInstance().getWindow().getHandle();
+
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_G) == GLFW.GLFW_PRESS && !gPressed) {
+                System.out.println("¡Tecla G presionada!");
+                gPressed = true;
+            }
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_G) == GLFW.GLFW_RELEASE && gPressed) {
+                System.out.println("¡Tecla G soltada!");
+                gPressed = false;
+            }
+        });
+    }
 
     private final String formatCoordsNether = "X: {X}, Y: {Y}, Z: {Z}";
     private final String formatCoordsOverworld = "X: {X}, Y: {Y}, Z: {Z}";
@@ -54,7 +47,6 @@ public class CoordsConverter {
 
     public CoordsConverter() {
 
-//        registerKeyCallback();
         // Registro del comando
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(ClientCommandManager.literal("getblockcoords")
