@@ -1,4 +1,4 @@
-package risinget.commander.mixin.client;
+package risinget.commander.mixin;
 
 import net.minecraft.client.util.ScreenshotRecorder;
 import net.minecraft.text.Text;

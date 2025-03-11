@@ -9,25 +9,18 @@
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/Risinget/commander-template-1.21"
+		"sources": "https://github.com/Risinget/commander-mod"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/commander/commander.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
-		"main": [
-			"risinget.commander.Commander"
-		],
 		"client": [
-			"risinget.commander.CommanderClient"
+			"risinget.commander.Commander"
 		]
 	},
 	"mixins": [
-		"commander.mixins.json",
-		{
-			"config": "commander.client.mixins.json",
-			"environment": "client"
-		}
+		"commander.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.5",

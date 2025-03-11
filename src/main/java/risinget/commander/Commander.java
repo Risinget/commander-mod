@@ -1,21 +1,78 @@
 package risinget.commander;
 
-import net.fabricmc.api.ModInitializer;
+import dev.isxander.yacl3.gui.YACLScreen;
+import org.lwjgl.glfw.GLFW;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import risinget.commander.commands.*;
+import risinget.commander.config.ConfigCommander;
+import risinget.commander.events.AutoDisconnect;
+import risinget.commander.events.HistoryChat;
+import risinget.commander.keybinds.CoordsConverter;
+import risinget.commander.gui.ScreenGUI;
+public class Commander implements ClientModInitializer {
 
-public class Commander implements ModInitializer {
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
-    public static final Logger LOGGER = LoggerFactory.getLogger("commander");
+	private static final Logger log = LoggerFactory.getLogger(Commander.class);
+	private boolean isConfigScreenOpen = false;
 
 	@Override
-	public void onInitialize() {
-		LOGGER.info("Hello Fabric world!");
+	public void onInitializeClient() {
 
-    }
+		SmallCapsConverter smallCapsConverter = new SmallCapsConverter();
+		smallCapsConverter.converter();
 
-    
+		new EmojisCommand();
+
+		new CopyCoords();
+
+		new Factorial();
+
+		new AutoDisconnect();
+
+		new WordsList();
+
+		new ColorsCommand();
+		new TestTextColorsCommand();
+
+		new DaysToTime();
+
+		new CoordsConverter();
+
+		new Commands();
+		new GeminiAICommand();
+		new CloudSS();
+
+		new HistoryChat();
+
+		// Inicialización del KeyBinding
+		KeyBinding openGUIYacl = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+				"Open Commander Config", // Asegúrate de que esto coincida con tu archivo de idiomas
+				InputUtil.Type.KEYSYM,
+				GLFW.GLFW_KEY_F8, // La tecla F8
+				"Commander" // Asegúrate de que esto coincida con tu archivo de idiomas
+		));
+
+		final boolean isConfigScreenOpen = false;
+		// Registrar el evento de tick del cliente
+		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+			if (openGUIYacl.wasPressed()) {
+				this.isConfigScreenOpen = true;
+		        ConfigCommander.HANDLER.load();
+				client.setScreen(ScreenGUI.yacl(client));
+			}
+			if (this.isConfigScreenOpen && !(client.currentScreen instanceof YACLScreen)) {
+				// Aquí detectas cuando la pantalla se cierra
+				System.out.println("La pantalla de configuración fue cerrada");
+				this.isConfigScreenOpen = false;
+				ConfigCommander.HANDLER.save();
+			}
+		});
+	}
 }

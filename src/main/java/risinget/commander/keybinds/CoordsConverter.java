@@ -13,7 +13,29 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
 
-public class CoordsConverter   {
+import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.client.MinecraftClient;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWKeyCallback;
+public class CoordsConverter {
+
+//    private static GLFWKeyCallback keyCallback;
+//    private void registerKeyCallback() {
+//        long window = MinecraftClient.getInstance().getWindow().getHandle();
+//
+//        keyCallback = new GLFWKeyCallback() {
+//            @Override
+//            public void invoke(long win, int key, int scancode, int action, int mods) {
+//                if (key == GLFW.GLFW_KEY_G && action == GLFW.GLFW_PRESS) {
+//                    System.out.println("¡Tecla G presionada!");
+//                }
+//                if (key == GLFW.GLFW_KEY_G && action == GLFW.GLFW_RELEASE) {
+//                    System.out.println("¡Tecla G soltada!");
+//                }
+//            }
+//        };
+//        GLFW.glfwSetKeyCallback(window, keyCallback);
+//    }
 
     private final String formatCoordsNether = "X: {X}, Y: {Y}, Z: {Z}";
     private final String formatCoordsOverworld = "X: {X}, Y: {Y}, Z: {Z}";
@@ -31,6 +53,8 @@ public class CoordsConverter   {
             "Commander"));
 
     public CoordsConverter() {
+
+//        registerKeyCallback();
         // Registro del comando
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(ClientCommandManager.literal("getblockcoords")

@@ -4,12 +4,17 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.scoreboard.ScoreboardDisplaySlot;
+import net.minecraft.scoreboard.ServerScoreboard;
+import net.minecraft.scoreboard.ScoreboardObjective;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.client.util.ScreenshotRecorder;
 import java.io.File;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import net.minecraft.client.MinecraftClient;
 import com.mojang.brigadier.CommandDispatcher;
@@ -17,25 +22,20 @@ import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 
 import com.cloudinary.*;
-import com.cloudinary.utils.ObjectUtils;
-import java.util.Map;
 
 public class CloudSS {
+    private static final MinecraftClient client = MinecraftClient.getInstance();
+
 
     private void registerScreenshotCommand(CommandDispatcher<FabricClientCommandSource> dispatcher) {
         dispatcher.register(ClientCommandManager.literal("screenshot")
                 .executes(this::executeScreenshotCommand));
     }
     private int executeScreenshotCommand(CommandContext<FabricClientCommandSource> context) {
-        // Registra ambos eventos
-//        InGameHud ingame = new InGameHud();
-//        System.out.println(ingame.getTextRenderer());
-
-        return 1; // Return 1 to indicate success
+        return 1;
     }
 
     public CloudSS(){
-
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
             registerScreenshotCommand(dispatcher);

@@ -3,7 +3,9 @@
 	"package": "risinget.commander.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"AutoDisconnectMixin",
+		"InitConfigurationMixin",
+		"ScreenshotRecorderMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
