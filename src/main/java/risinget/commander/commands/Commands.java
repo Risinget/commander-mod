@@ -20,6 +20,8 @@ public class Commands {
                         &b/colors &6-&7 Muestra una lista de colores&r
                         &b/daysToTime &6-&7 Te dice días del mundo y más&r
                         &b/wordsList &6-&7 Muestra una lista de palabras&r
+                        &b/gemini &7<prompt> &6-&7 Conversa com Gemini&r
+                        &b/wordsList &6-&7 Muestra una lista de palabras&r
 
                         F9 para copiar posición actual
                         F10 copiar posición del bloque donde miras
@@ -33,5 +35,6 @@ public class Commands {
             }));
         });
     }
+
 
 }

@@ -25,6 +25,7 @@ public class ScreenshotRecorderMixin {
      * @author Risinget
      * @reason Personalizar la lógica de funcionalidad de imagen.
      */
+
     @Overwrite
     private static void saveScreenshotInner(File gameDirectory, String fileName, Framebuffer framebuffer, Consumer<Text> messageReceiver) {
         NativeImage nativeImage = ScreenshotRecorder.takeScreenshot(framebuffer);

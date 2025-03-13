@@ -1,14 +1,20 @@
 {
-	"required": true,
-	"package": "risinget.commander.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"AutoDisconnectMixin",
-		"InitConfigurationMixin",
-		"ScreenshotRecorderMixin",
-		"KeyBindingMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "package": "risinget.commander.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AutoDisconnectMixin",
+    "HealthChangeMixin",
+    "InitConfigurationMixin",
+    "KeyBindingMixin",
+    "MultiplayerScreenMixin",
+    "ScreenshotRecorderMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "ChatHudMixin",
+    "CloseYACLScreen"
+  ]
 }

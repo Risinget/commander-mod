@@ -11,7 +11,6 @@ import net.minecraft.text.Text;
 public class WordsList {
     public String[] wordList = {
         "&b&k!!&r &cDDLS ON TOP &b&k!!",
-        "Texto2"
     };
     public WordsList() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {

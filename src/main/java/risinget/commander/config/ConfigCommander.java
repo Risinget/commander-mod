@@ -23,7 +23,7 @@ public class ConfigCommander {
     public static final ConfigClassHandler<ConfigCommander> HANDLER = ConfigClassHandler.createBuilder(ConfigCommander.class)
            .id(Identifier.of("risinget", "comander/risinget_comander.json5"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
-            .setPath(FabricLoader.getInstance().getConfigDir().resolve("risinget_comander.json5"))
+            .setPath(FabricLoader.getInstance().getConfigDir().resolve("commander/risinget_comander.json5"))
             .appendGsonBuilder(GsonBuilder::setPrettyPrinting) // Corrected method name
             .setJson5(true)
             .build())

@@ -18,6 +18,10 @@ public class InitConfigurationMixin {
 
     @Inject(at = @At("RETURN"), method = "joinWorld")
     private void onWorldLoaded(CallbackInfo info) {
-
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client != null && client.getCurrentServerEntry() != null) {
+            String motd = client.getCurrentServerEntry().label.getString();
+            System.out.println("MOTD del servidor: " + motd);
+        }
     }
 }

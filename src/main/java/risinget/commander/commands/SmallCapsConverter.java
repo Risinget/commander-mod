@@ -17,7 +17,7 @@ import net.minecraft.text.Text;
 
 public class SmallCapsConverter {
 
-    public void converter() {
+    public SmallCapsConverter() {
         Map<Character, Character> diccionario = getDiccionario();
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("smallcaps")

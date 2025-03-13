@@ -2,38 +2,75 @@ package risinget.commander.events;
 
 import com.mojang.authlib.GameProfile;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientLoginNetworkHandler;
+import net.minecraft.client.network.ServerInfo;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.text.Text;
-import com.google.gson.Gson;
 import com.google.gson.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.io.File;
-import net.minecraft.registry.RegistryWrapper.WrapperLookup;
+
 import net.minecraft.util.Util;
-import net.minecraft.client.gui.hud.InGameHud;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import risinget.commander.Commander;
+import risinget.commander.utils.TextColor;
 
 
 public class HistoryChat {
     private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static ServerInfo srv = null;
+    private static File logFile = null;
+    private static File logFileColored = null;
+
+    private static final Logger LOGGER = Commander.getLogger(HistoryChat.class);
 
     public HistoryChat() {
 
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+
+            if (client.isInSingleplayer()) {
+                System.out.println("This is a single-player world. No MOTD to capture.");
+
+                logFile = new File("config/commander/servers/singleplayer/commander_chat_history.txt");
+                logFileColored = new File("config/commander/servers/singleplayer/commander_chat_colored.txt");
+                try {
+                    Files.createDirectories(logFile.toPath().getParent());
+                    Files.createDirectories(logFileColored.toPath().getParent());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                return;
+            }
+
+            srv = client.getCurrentServerEntry();
+            assert srv != null;
+
+            logFile = new File("config/commander/servers/"+srv.address.replace(":",".")+"/commander_chat_history.txt");
+            logFileColored = new File("config/commander/servers/"+srv.address.replace(":",".")+"/commander_chat_colored.txt");
+
+            try {
+                Files.createDirectories(logFile.toPath().getParent());
+                Files.createDirectories(logFileColored.toPath().getParent());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         ClientReceiveMessageEvents.ALLOW_CHAT.register((message, overlay, overlay2, overlay3, overlay4) ->
                 message != null ? onChatMessage(message, overlay, overlay2, overlay3, overlay4) : false);
 
         ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) ->
                 message != null ? onGameMessage(message, overlay) : false);
     }
-
-    private static final File logFile = new File("config/commander_chat_history.txt");
-    private static final File logFileColored = new File("config/commander_chat_colored.txt");
 
     private boolean onGameMessage(Text message, boolean overlay) {
         Util.getIoWorkerExecutor().execute(() -> {
@@ -48,10 +85,10 @@ public class HistoryChat {
         });
         return true;
     }
-    private void processMessage(Text message) {
+    private static void processMessage(Text message) {
         if (client.getNetworkHandler() != null) {
-            WrapperLookup registry = MinecraftClient.getInstance().getNetworkHandler().getRegistryManager();
-            String json = Text.Serialization.toJsonString(message, registry);
+
+            String json = TextColor.toJson(message);
             // Guardar el mensaje en texto plano
             String msgPlain = message.getString();
             saveMessage(handleColorCodes(msgPlain, true), logFile);
@@ -78,7 +115,7 @@ public class HistoryChat {
         }
     }
 
-    private synchronized void saveMessage(String msg, File file) {
+    private static synchronized void saveMessage(String msg, File file) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             writer.write("[" + timestamp + "] " + msg);
@@ -89,7 +126,7 @@ public class HistoryChat {
     }
 
 
-    private static String formatJsonMessage(JsonObject jsonObject) {
+    public static String formatJsonMessage(JsonObject jsonObject) {
         StringBuilder builder = new StringBuilder();
         // Procesar el campo "translate" si existe
         if (jsonObject.has("translate")) {
@@ -143,14 +180,22 @@ public class HistoryChat {
             builder.append(getColorCode(color));
         }
 
+        if (component.has("strikethrough") && component.get("strikethrough").getAsBoolean()) {
+            builder.append("&m");
+        }
+        if (component.has("obfuscated") && component.get("obfuscated").getAsBoolean()) {
+            builder.append("&k");
+        }
         // Procesar el campo "bold" si existe
         if (component.has("bold") && component.get("bold").getAsBoolean()) {
             builder.append("&l");
         }
-
         // Procesar el campo "italic" si existe
         if (component.has("italic") && component.get("italic").getAsBoolean()) {
             builder.append("&o");
+        }
+        if (component.has("underline") && component.get("underline").getAsBoolean()) {
+            builder.append("&u");
         }
 
         // Procesar el campo "text" si existe

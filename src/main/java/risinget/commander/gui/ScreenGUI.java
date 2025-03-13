@@ -1,10 +1,15 @@
 package risinget.commander.gui;
 
 import dev.isxander.yacl3.api.*;
+import dev.isxander.yacl3.gui.YACLScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.client.gui.screen.Screen;
-public class ScreenGUI {
+import risinget.commander.config.ConfigCommander;
+
+public class ScreenGUI{
+
+    private static final MinecraftClient client = MinecraftClient.getInstance();
 
     public static Screen yacl(MinecraftClient client){
         return YetAnotherConfigLib.createBuilder()
@@ -15,5 +20,9 @@ public class ScreenGUI {
             .category(CloudinaryConfig.category())
             .build()
             .generateScreen(client.currentScreen);
+    }
+    public static void openGui(){
+        ConfigCommander.HANDLER.load();
+        client.setScreen(ScreenGUI.yacl(client));
     }
 }

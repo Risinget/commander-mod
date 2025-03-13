@@ -57,7 +57,7 @@ dependencies {
 	implementation 'com.cloudinary:cloudinary-core:2.2.0'
 	implementation 'com.cloudinary:cloudinary-http5:2.2.0' // Use the latest version
 	modRuntimeOnly 'com.terraformersmc:modmenu:13.0.2'
-	modRuntimeOnly("meteordevelopment:meteor-client:1.21.4-SNAPSHOT") // Usa la versión más reciente
+	modRuntimeOnly "meteordevelopment:meteor-client:1.21.4-SNAPSHOT" // Usa la versión más reciente
 
 }
 
