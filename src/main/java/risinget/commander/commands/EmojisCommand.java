@@ -32,10 +32,11 @@ public class EmojisCommand {
                             .styled(style -> style
                                     .withColor(Formatting.RED)
                                     .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, emoji))
+                                    .withInsertion(emoji)
                                     .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click para copiar!"))));
-                    combinedText.append(emojiText); // Añadir el texto del emoji al texto combinado
+                    combinedText.append(emojiText);
                 }
-                context.getSource().sendFeedback(combinedText); // Enviar el texto combinado como una sola línea
+                context.getSource().sendFeedback(combinedText);
                 return 1;
             }));
         });

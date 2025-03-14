@@ -1,15 +1,14 @@
 package risinget.commander.mixin;
 
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.network.LanServerQueryManager;
 import net.minecraft.client.option.ServerList;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -24,54 +23,45 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import risinget.commander.Commander;
 import risinget.commander.events.HistoryChat;
 import risinget.commander.utils.ImageUtils;
 import risinget.commander.utils.TextColor;
-
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-
-import static net.minecraft.client.gui.screen.multiplayer.MultiplayerServerListWidget.*;
-
+import org.slf4j.Logger;
 @Mixin(MultiplayerScreen.class)
 public abstract class MultiplayerScreenMixin extends Screen {
 
     @Shadow protected MultiplayerServerListWidget serverListWidget;
-    @Shadow protected abstract void removeEntry(boolean confirmedAction);
-
     @Shadow private ServerList serverList;
-    @Shadow private LanServerQueryManager.LanServerEntryList lanServers;
-    // Usamos un HashMap donde la clave es la IP (String) y el valor es otro String (por ejemplo, el nombre del servidor)
+    @Unique
     private Map<String, String> serverInfoMap = new HashMap<>();
+    @Unique
     private boolean isServerListLoaded = false;
-    // Método para agregar datos al mapa
-    public void addServer(String ip, String value) {
-        serverInfoMap.put(ip, value); // Asocia la IP con un valor (como el nombre o algún dato relacionado)
-    }
-
-    // Método para obtener el valor usando la IP como clave
-    public String getServerInfo(String ip) {
-        return serverInfoMap.get(ip); // Devuelve el valor asociado a la IP
-    }
-
+    @Unique
+    public void addServer(String ip, String value) { serverInfoMap.put(ip, value); }
+    @Unique
+    public String getServerInfo(String ip) { return serverInfoMap.get(ip); }
+    @Unique
     protected final MinecraftClient client = MinecraftClient.getInstance();
-    protected MultiplayerScreenMixin(Text title) {
-        super(title);
-    }
+    protected MultiplayerScreenMixin(Text title) { super(title); }
+
+    @Unique
+    private static final Logger LOGGER = (Logger) Commander.getLogger(MultiplayerScreenMixin.class);
 
     @Inject(method = "init", at = @At("TAIL"))
     private void onInit(CallbackInfo ci) {
-        // Coordenadas del botón "Añadir servidor"
-        int addServerButtonX = this.width / 2 - 154; // Posición X del botón "Añadir servidor"
-        int addServerButtonY = this.height - 54;     // Posición Y del botón "Añadir servidor"
-
-        // Crear el botón personalizado y colocarlo a la derecha del botón "Añadir servidor"
+        int addServerButtonX = this.width / 2 - 154;
+        int addServerButtonY = this.height - 54;
         ButtonWidget btnCopyMotd = ButtonWidget.builder(Text.of("Copy MOTD"), button -> {
-                    // Acción al hacer clic en el botón
                     MultiplayerServerListWidget.Entry entry = this.serverListWidget.getSelectedOrNull();
                     if (entry instanceof MultiplayerServerListWidget.ServerEntry) {
                         ServerInfo srv = ((MultiplayerServerListWidget.ServerEntry)entry).getServer();
@@ -90,23 +80,30 @@ public abstract class MultiplayerScreenMixin extends Screen {
                         }
                     }
                 })
-                .dimensions(addServerButtonX + 325, addServerButtonY, 70, 15) // Coloca el botón a la derecha del botón "Añadir servidor"
+                .dimensions(addServerButtonX + 325, addServerButtonY, 70, 15)
                 .build();
 
         ButtonWidget btnSaveSrvsInfo = ButtonWidget.builder(Text.of("SaveAllInfo"), button -> {
-                    // Ahora la animación ha terminado, imprimir la lista de servidores
-                    if (this.serverList != null) {
-                        System.out.println(this.serverList.get(1).label);
+                    try {
+                        loadServerList();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
-                    for (int i = 0; i < this.serverList.size(); i++) {
-                        ServerInfo srv = this.serverList.get(i);
-                        Text srvMotd = srv.label;
-                        System.out.println("ADDRESS: "+srv.address+"MOTD: "+srvMotd);
+                    if (this.serverList != null) {
+                        for (int i = 0; i < (this.serverList != null ? this.serverList.size() : 0); i++) {
+                            ServerInfo srv = this.serverList.get(i);
+                            Util.getIoWorkerExecutor().execute(()->{
+                                this.saveIcon(srv);
+                                this.saveInfo(srv);
+                            });
+                            LOGGER.info("ADDRESS: "+srv.address+"MOTD: "+srv.label);
+                        }
                     }
                 }).tooltip(Tooltip.of(Text.of("First Scroll up to down"))).dimensions(addServerButtonX + 325 + 70, addServerButtonY, 70, 15) // Ajustar la posición del botón
                 .build();
 
         ButtonWidget CopyAsIP = ButtonWidget.builder(Text.of("Copy as IP"), button -> {
+
                     MultiplayerServerListWidget.Entry entry = this.serverListWidget.getSelectedOrNull();
                     if (entry instanceof MultiplayerServerListWidget.ServerEntry) {
                         ServerInfo srv = ((MultiplayerServerListWidget.ServerEntry) entry).getServer();
@@ -124,7 +121,6 @@ public abstract class MultiplayerScreenMixin extends Screen {
                 }).dimensions(addServerButtonX + 325, addServerButtonY + 15, 70, 15) // Coloca el botón a la derecha del botón "Añadir servidor"
                 .build();
 
-
         ButtonWidget btnSaveFavicon = ButtonWidget.builder(Text.of("Save Icon"), button -> {
                     try {
                         loadServerList();
@@ -134,67 +130,95 @@ public abstract class MultiplayerScreenMixin extends Screen {
                     MultiplayerServerListWidget.Entry entry = this.serverListWidget.getSelectedOrNull();
                     if (entry instanceof MultiplayerServerListWidget.ServerEntry) {
                         ServerInfo srv = ((MultiplayerServerListWidget.ServerEntry) entry).getServer();
-                        if (srv != null) {
-                            // Buscar el servidor correspondiente en la lista
-                            String base64icon = getServerInfo(srv.address);
-                            String srvName = srv.address.replace(":",".");
-                            Path filePath = client.runDirectory.toPath().resolve("config/commander/servers/"+srvName+"/"+srvName+".png");
-                            // Crear directorios si no existen
-                            try {
-                                Files.createDirectories(filePath.getParent());
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            ImageUtils.saveBase64AsImage(base64icon, String.valueOf(filePath));
-                        }
+                        this.saveIcon(srv);
                     }
-
-
                 }).dimensions(addServerButtonX + 325+70, addServerButtonY + 15, 70, 15) // Coloca el botón a la derecha del botón "Añadir servidor"
                 .build();
-
-
-
 
         ButtonWidget btnOpenFolder = ButtonWidget.builder(Text.of("Open Folder Servers"), button -> {
                     Path folderServers = MinecraftClient.getInstance().runDirectory.toPath().resolve("config/commander/servers");
                     try {
-                        Files.createDirectory(folderServers);
+                        if (!Files.exists(folderServers)) {
+                            Files.createDirectory(folderServers);
+                        }
+                        Util.getOperatingSystem().open(folderServers);
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        LOGGER.error("Failed to create or open the servers folder: ", e);
                     }
-                    Util.getOperatingSystem().open(folderServers);
-                }).tooltip(Tooltip.of(Text.of("First Scroll up to down"))).dimensions(addServerButtonX + 325, addServerButtonY+30, 100, 15) // Ajustar la posición del botón
+                }).tooltip(Tooltip.of(Text.of("First Scroll up to down"))).dimensions(addServerButtonX + 325, addServerButtonY + 30, 100, 15) // Ajustar la posición del botón
                 .build();
-
-        this.addDrawableChild(btnCopyMotd); // Añade el botón a la pantalla
-        this.addDrawableChild(btnSaveFavicon);
-        this.addDrawableChild(CopyAsIP);
+        this.addDrawableChild(btnCopyMotd);
         this.addDrawableChild(btnSaveSrvsInfo);
+        this.addDrawableChild(CopyAsIP);
+        this.addDrawableChild(btnSaveFavicon);
         this.addDrawableChild(btnOpenFolder);
     }
 
+    @Unique
+    public void saveIcon(ServerInfo srv){
+        if (srv != null) {
+            String base64icon = getServerInfo(srv.address);
+            String srvName = srv.address.replace(":",".");
+            Path filePath = client.runDirectory.toPath().resolve("config/commander/servers/"+srvName+"/"+srvName+".png");
+            try {
+                Files.createDirectories(filePath.getParent());
+            } catch (IOException e) {
+                LOGGER.error(e.getMessage());
+            }
+            ImageUtils.saveBase64AsImage(base64icon, String.valueOf(filePath));
+        }
+    }
 
-    // Método para cargar los servidores
+    @Unique
+    public synchronized void saveInfo(ServerInfo srv){
+        if (srv.label != null) {
+            String srvName = srv.address.replace(":",".");
+            Path filePath = client.runDirectory.toPath().resolve("config/commander/servers/"+srvName+"/"+srvName+".txt");
+            try {
+                Files.createDirectories(filePath.getParent());
+            } catch (IOException e) {
+                LOGGER.error(e.getMessage());
+            }
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(filePath.toUri()), true))) {
+                try {
+                    writer.write(HistoryChat.handleColorCodes(HistoryChat.formatJsonMessage(JsonParser.parseString(TextColor.toJson(srv.label)).getAsJsonObject()),false));
+                    writer.newLine();
+                }catch(JsonSyntaxException | IllegalStateException e) {
+                    writer.write(HistoryChat.handleColorCodes(TextColor.toJson(srv.label), false));
+                    writer.newLine();
+                }
+                Text serverMOTD = srv.label;
+                JsonObject jsonObject;
+                try {
+                    jsonObject = JsonParser.parseString(TextColor.toJson(serverMOTD)).getAsJsonObject();
+                    String formattedMessage = HistoryChat.formatJsonMessage(jsonObject);
+                    writer.write(HistoryChat.handleColorCodes(formattedMessage, false));
+                    writer.newLine();
+                }catch(IllegalStateException e){
+                    writer.write(TextColor.toJson(srv.label));
+                    writer.newLine();
+                }
+            } catch (IOException e) {
+                LOGGER.error(e.getMessage());
+            }
+        }
+    }
+
     @Unique
     private void loadServerList() throws IOException {
         if (isServerListLoaded) {
-            // Si ya hemos cargado los servidores, no lo hacemos de nuevo
             return;
         }
-        // Cargar el archivo servers.dat
         NbtCompound nbtCompound = NbtIo.read(client.runDirectory.toPath().resolve("servers.dat"));
-        NbtList nbtList = nbtCompound.getList("servers", NbtElement.COMPOUND_TYPE);
-        // Convertir los datos NBT a ServerInfo y almacenarlos en la lista
-        for (int i = 0; i < nbtList.size(); i++) {
-            NbtCompound serverData = nbtList.getCompound(i);
-            String address = serverData.getString("ip");
-            String icon = serverData.getString("icon");
-            addServer(address,icon);
+        if(nbtCompound != null){
+            NbtList nbtList = nbtCompound.getList("servers", NbtElement.COMPOUND_TYPE);
+            for (int i = 0; i < nbtList.size(); i++) {
+                NbtCompound serverData = nbtList.getCompound(i);
+                String address = serverData.getString("ip");
+                String icon = serverData.getString("icon");
+                addServer(address,icon);
+            }
+            isServerListLoaded = true;
         }
-
-        // Marcar como cargada la lista de servidores
-        isServerListLoaded = true;
     }
-
 }

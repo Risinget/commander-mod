@@ -15,7 +15,7 @@ public class Commander implements ClientModInitializer {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(Commander.class);
 	public static Logger getLogger(Class<?> clazz) {
-		return LoggerFactory.getLogger(Commander.class+"->"+clazz);
+		return LoggerFactory.getLogger(Commander.class.getSimpleName() + " -> " + clazz.getSimpleName());
 	}
 	@Override
 	public void onInitializeClient() {
@@ -24,7 +24,6 @@ public class Commander implements ClientModInitializer {
 				KeyHandler::new,
 				SmallCapsConverter::new,
 				EmojisCommand::new,
-				CopyCoords::new,
 				Factorial::new,
 				AutoDisconnect::new,
 				WordsList::new,
@@ -32,7 +31,7 @@ public class Commander implements ClientModInitializer {
 				TestTextColorsCommand::new,
 				DaysToTime::new,
 				CoordsConverter::new,
-				Commands::new,
+				ListCommands::new,
 				GeminiAICommand::new,
 				TestCommand::new,
 				HistoryChat::new

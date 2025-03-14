@@ -9,6 +9,8 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import risinget.commander.enums.GeminiModel;
 
+import java.io.Serial;
+
 public class ConfigCommander {
 
     // Valores predeterminados (inmutables)
@@ -44,14 +46,25 @@ public class ConfigCommander {
         desconectarMenorVidaQue = healthMin;
     }
 
-    @SerialEntry(comment = "Default Coords Format")
-    public static String coordsFormat = DEFAULT_COORDS_FORMAT;
-    public static String getCoordsFormat(){
-        return coordsFormat;
-    }
-    public static void setCoordsFormat(String format){
-        coordsFormat = format;
-    }
+    @SerialEntry(comment = "--------- CONFIGURATION FOR COORDS ---------")
+    public static String posCoordsFormat = DEFAULT_COORDS_FORMAT;
+    public static String getPosCoordsFormat(){return posCoordsFormat;}
+    public static void setPosCoordsFormat(String newFormat ){posCoordsFormat = newFormat;}
+
+    @SerialEntry
+    public static String posCoordsViewing = DEFAULT_COORDS_FORMAT;
+    public static String getPosCoordsViewing(){return posCoordsViewing;}
+    public static void setPosCoordsViewing(String newFormat){ posCoordsViewing = newFormat;}
+
+    @SerialEntry
+    public static String formatCoordsNether = DEFAULT_COORDS_FORMAT;
+    public static String getFormatCoordsNether(){return formatCoordsNether;}
+    public static void setFormatCoordsNether(String newFormat){ formatCoordsNether = newFormat;}
+
+    @SerialEntry
+    public static String formatCoordsOverworld = DEFAULT_COORDS_FORMAT;
+    public static String getFormatCoordsOverworld(){return formatCoordsOverworld;}
+    public static void setFormatCoordsOverworld(String newFormat){formatCoordsOverworld = newFormat;}
 
     @SerialEntry(comment = "API KEY para GEMINI")
     public static String API_KEY_GEMINI = DEFAULT_API_KEY;

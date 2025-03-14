@@ -14,14 +14,14 @@ public class TestTextColorsCommand {
 
     public TestTextColorsCommand() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("testTextColors")
-                .then(ClientCommandManager.argument("textToTest", StringArgumentType.greedyString())
+            dispatcher.register(ClientCommandManager.literal("testColors")
+                .then(ClientCommandManager.argument("text", StringArgumentType.greedyString())
                     .executes(context -> {
-                        String textToTest = StringArgumentType.getString(context, "textToTest");
+                        String textToTest = StringArgumentType.getString(context, "text");
                         MutableText textColored = Formatter.parseAndFormatText(textToTest)
-                                .styled(style -> style
-                                        .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, textToTest))
-                                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click para copiar!"))));
+                            .styled(style -> style
+                            .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, textToTest))
+                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click para copiar!"))));
                         context.getSource().sendFeedback(textColored);
 //                        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(textColored);
                         return 1;

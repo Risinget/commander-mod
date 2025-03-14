@@ -19,14 +19,44 @@ public class CopyCoordsConfig {
                     .description(OptionDescription.of(Text.of(
                             "Configuración de la copia de coordenadas. Esta configuración se aplica a la copia de coordenadas.")))
                     .option(Option.<String>createBuilder()
-                            .name(Text.of("Coords Format"))
+                            .name(Text.of("Formato Coords de Posición"))
                             .description(OptionDescription.of(Text.of(
                                     "Hay tres variables X, Y y Z que se pueden usar en el formato de coordenadas. Estas variables se reemplazarán por las coordenadas del jugador.")))
                             .binding(ConfigCommander.DEFAULT_COORDS_FORMAT,
-                                    ConfigCommander::getCoordsFormat,
-                                    ConfigCommander::setCoordsFormat)
+                                    ConfigCommander::getPosCoordsFormat,
+                                    ConfigCommander::setPosCoordsFormat)
                             .controller(StringControllerBuilder::create)
                             .build())
+                    .option(Option.<String>createBuilder()
+                            .name(Text.of("Formato de Coords donde miras"))
+                            .description(OptionDescription.of(Text.of(
+                                    "Hay tres variables X, Y y Z que se pueden usar en el formato de coordenadas. Estas variables se reemplazarán por las coordenadas del jugador.")))
+                            .binding(ConfigCommander.DEFAULT_COORDS_FORMAT,
+                                    ConfigCommander::getPosCoordsViewing,
+                                    ConfigCommander::setPosCoordsViewing)
+                            .controller(StringControllerBuilder::create)
+                            .build())
+
+                    .option(Option.<String>createBuilder()
+                            .name(Text.of("Format de Coords después de Convertir al overworld"))
+                            .description(OptionDescription.of(Text.of(
+                                    "Hay tres variables X, Y y Z que se pueden usar en el formato de coordenadas. Estas variables se reemplazarán por las coordenadas del jugador.")))
+                            .binding(ConfigCommander.DEFAULT_COORDS_FORMAT,
+                                    ConfigCommander::getFormatCoordsOverworld,
+                                    ConfigCommander::setFormatCoordsOverworld)
+                            .controller(StringControllerBuilder::create)
+                            .build())
+
+                    .option(Option.<String>createBuilder()
+                            .name(Text.of("Format de Coords después de Convertir al nether"))
+                            .description(OptionDescription.of(Text.of(
+                                    "Hay tres variables X, Y y Z que se pueden usar en el formato de coordenadas. Estas variables se reemplazarán por las coordenadas del jugador.")))
+                            .binding(ConfigCommander.DEFAULT_COORDS_FORMAT,
+                                    ConfigCommander::getFormatCoordsNether,
+                                    ConfigCommander::setFormatCoordsOverworld)
+                            .controller(StringControllerBuilder::create)
+                            .build())
+
                     .build())
             .build();
     }

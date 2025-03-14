@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import risinget.commander.config.ConfigCommander;
 
 @Mixin(YACLScreen.class)
-public abstract class CloseYACLScreen {
+public abstract class CloseYACLScreenMixin {
     @Inject(method = "close", at = @At("HEAD"))
     public void onClose(CallbackInfo info) {
         System.out.println("La pantalla se está cerrando.");

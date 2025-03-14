@@ -60,7 +60,7 @@ public class GeminiAICommand {
     public static CompletableFuture<String> sendRequestAndGetResponse(String prompt) {
       return CompletableFuture.supplyAsync(() -> {
         // URL de la API
-        String url = "https://generativelanguage.googleapis.com/v1beta/models/"+ConfigCommander.getSelectedModel()+":generateContent?key=" + ConfigCommander.getApiKeyGemini();
+        String url = "https://generativelanguage.googleapis.com/v1beta/models/"+ConfigCommander.getSelectedModel().getModelName()+":generateContent?key=" + ConfigCommander.getApiKeyGemini();
         // Cuerpo de la solicitud en formato JSON
         String jsonBody = String.format(
           """

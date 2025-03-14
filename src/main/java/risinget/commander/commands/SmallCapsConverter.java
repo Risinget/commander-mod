@@ -2,12 +2,9 @@ package risinget.commander.commands;
 import org.jetbrains.annotations.NotNull;
 import risinget.commander.utils.Formatter;
 import risinget.commander.utils.Prefix;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import com.mojang.brigadier.arguments.StringArgumentType;
-
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.text.ClickEvent;
@@ -35,7 +32,7 @@ public class SmallCapsConverter {
                             textoConvertido.append(c);
                         }
                     }
-                    String outputWithText = Prefix.COMMANDER + "&7Tu texto convertido es:&r "+ textoConvertido;
+                    String outputWithText = Prefix.COMMANDER + " &7Tu texto convertido es:&r "+ textoConvertido;
                     MutableText feedbackText = Formatter.parseAndFormatText(outputWithText)
                                     .styled(style -> style
                                     .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))

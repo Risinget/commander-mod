@@ -5,9 +5,9 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.minecraft.text.MutableText;
 import risinget.commander.utils.Formatter;
 
-public class Commands {
+public class ListCommands {
 
-    public Commands() {
+    public ListCommands() {
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(ClientCommandManager.literal("commands").executes(context -> {
@@ -23,11 +23,11 @@ public class Commands {
                         &b/gemini &7<prompt> &6-&7 Conversa com Gemini&r
                         &b/wordsList &6-&7 Muestra una lista de palabras&r
 
-                        F9 para copiar posición actual
-                        F10 copiar posición del bloque donde miras
-                        F6 copiar y convertir bloque donde miras a Nether
-                        F7 copiar y convertir bloque donde miras a Overworld
-                        F8 abrir commander GUI
+                        &7F9 para copiar posición actual
+                        &7F10 copiar posición del bloque donde miras
+                        &7F6 copiar y convertir bloque donde miras a Nether
+                        &7F7 copiar y convertir bloque donde miras a Overworld
+                        &7F8 abrir commander GUI
                         """;
                 MutableText textColored = Formatter.parseAndFormatText(commands);
                 context.getSource().sendFeedback(textColored);

@@ -10,9 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import risinget.commander.Commander;
 import risinget.commander.events.AutoDisconnect;
-
 import java.io.File;
-
 
 @Mixin(AutoDisconnect.class)
 public class AutoDisconnectMixin {
