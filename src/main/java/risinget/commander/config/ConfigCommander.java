@@ -14,13 +14,14 @@ import java.io.Serial;
 public class ConfigCommander {
 
     // Valores predeterminados (inmutables)
-    public static final boolean DEFAULT_ACTIVAR_DESCONEXION = true;
+    public static final boolean DEFAULT_ACTIVAR_DESCONEXION = false;
     public static final int DEFAULT_DESCONECTAR_MENOR_VIDA_QUE = 5;
     public static final String DEFAULT_COORDS_FORMAT = "X: {X}, Y: {Y}, Z: {Z}";
     public static final String DEFAULT_API_KEY = "your-api-key-here";
     public static final GeminiModel DEFAULT_SELECTED_MODEL = GeminiModel.PRO;
     public static final String DEFAULT_CLOUD_NAME = "cloud_name_cloudinary";
     public static final String DEFAULT_API_SECRET_CLOUDINARY = "api_secret_id";
+    public static final boolean DEFAULT_ENABLE_UPLOAD_TO_CLOUD = false;
 
     public static final ConfigClassHandler<ConfigCommander> HANDLER = ConfigClassHandler.createBuilder(ConfigCommander.class)
            .id(Identifier.of("risinget", "comander/risinget_comander.json5"))
@@ -31,7 +32,7 @@ public class ConfigCommander {
             .build())
             .build();
 
-    @SerialEntry
+    @SerialEntry(comment = "--------- CONFIGURATION FOR AUTODISCONNECT ---------")
     public static boolean activarDesconexion = DEFAULT_ACTIVAR_DESCONEXION;
     public static boolean isOn(){return activarDesconexion;}
     public static boolean getOn(){ return activarDesconexion; }
@@ -66,7 +67,7 @@ public class ConfigCommander {
     public static String getFormatCoordsOverworld(){return formatCoordsOverworld;}
     public static void setFormatCoordsOverworld(String newFormat){formatCoordsOverworld = newFormat;}
 
-    @SerialEntry(comment = "API KEY para GEMINI")
+    @SerialEntry(comment = "--------- CONFIGURATION FOR GEMINI AI ---------")
     public static String API_KEY_GEMINI = DEFAULT_API_KEY;
     public static String getApiKeyGemini(){
         return API_KEY_GEMINI;
@@ -75,7 +76,7 @@ public class ConfigCommander {
         API_KEY_GEMINI = apiKey;
     }
 
-    @SerialEntry(comment = "Modelo de Gemini")
+    @SerialEntry
     public static String selectedModel = DEFAULT_SELECTED_MODEL.getModelName();
     public static GeminiModel getSelectedModel() {
         for (GeminiModel model : GeminiModel.values()) {
@@ -88,6 +89,11 @@ public class ConfigCommander {
     public static void setSelectedModel(String modelName) {
         selectedModel = modelName;
     }
+
+    @SerialEntry(comment = "--------- CONFIGURATION FOR CLOUDINARY ---------")
+    public static boolean enableUploadToCloud = DEFAULT_ENABLE_UPLOAD_TO_CLOUD;
+    public static boolean getEnableUploadToCloud(){ return enableUploadToCloud; }
+    public static void setEnableUploadToCloud(boolean enable){enableUploadToCloud = enable;}
 
     @SerialEntry
     public static String CLOUD_NAME = DEFAULT_CLOUD_NAME;
@@ -103,10 +109,5 @@ public class ConfigCommander {
     public static String API_SECRET_CLOUDINARY = DEFAULT_API_SECRET_CLOUDINARY;
     public static String getApiSecretCloudinary(){return API_SECRET_CLOUDINARY;}
     public static void setApiSecretCloudinary(String apiSecret){API_SECRET_CLOUDINARY = apiSecret;}
-
-
-
-
-
 
 }

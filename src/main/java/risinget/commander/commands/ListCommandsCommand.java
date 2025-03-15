@@ -5,9 +5,9 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.minecraft.text.MutableText;
 import risinget.commander.utils.Formatter;
 
-public class ListCommands {
+public class ListCommandsCommand {
 
-    public ListCommands() {
+    public ListCommandsCommand() {
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(ClientCommandManager.literal("commands").executes(context -> {

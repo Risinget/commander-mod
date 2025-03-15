@@ -8,11 +8,11 @@ import net.minecraft.text.ClickEvent;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-public class WordsList {
+public class WordsListCommand {
     public String[] wordList = {
         "&b&k!!&r &cDDLS ON TOP &b&k!!",
     };
-    public WordsList() {
+    public WordsListCommand() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(ClientCommandManager.literal("wordlist").executes(context -> {
                 for (String word : wordList) {

@@ -7,11 +7,11 @@ import risinget.commander.utils.Formatter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class DaysToTime {
+public class DaysToTimeCommand {
 
     private long days;
 
-    public DaysToTime() {
+    public DaysToTimeCommand() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(ClientCommandManager.literal("daystotime")
                 .executes(context -> {

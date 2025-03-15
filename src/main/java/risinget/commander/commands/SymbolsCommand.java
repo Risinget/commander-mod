@@ -7,13 +7,13 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class EmojisCommand {
+public class SymbolsCommand {
 
-    public EmojisCommand() {
+    public SymbolsCommand() {
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("emojis").executes(context -> {
-                String[] emojis = { "⛏", "🔱", "🪓", "🛡", "🗡", "🏹", "🎣", "⚗", "🧪", "🔥", "⛄", "🌧", "⛈", "🍖",
+            dispatcher.register(ClientCommandManager.literal("symbols").executes(context -> {
+                String[] symbols = { "⛏", "🔱", "🪓", "🛡", "🗡", "🏹", "🎣", "⚗", "🧪", "🔥", "⛄", "🌧", "⛈", "🍖",
                         "🔔", "🪣", "❌", "⏭", "⏯", "⏮", "⏸", "⏹", "⏺", "⅐", "❤", "❣", "⭐", "⚡", "✎", "☠", "⚠", "⌛", "⌚",
                         "⚓", "✝", "☃", "🌊", "☮", "☯", "Ⓜ", "ℹ", "Ω", "☽", "☀", "❄", "☁", "☂", "☔", "☄", "☺", "☹", "☻",
                         "♀", "♂", "♫", "♩", "♪", "♬", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅", "→", "←", "↓", "↑", "←", "↔", "☞",
@@ -27,14 +27,14 @@ public class EmojisCommand {
                         "⑬", "⑭", "⑮", "⑯", "⑰", "⑱", "⑲", "⑳", "ʊ", "ღ", "₪", "∧", "∨", "∩", "⊂", "⊃", "⊥", "∀", "Ξ",
                         "Γ", "Σ", "Π" };
                 MutableText combinedText = Text.literal(""); // Texto combinado que contendrá todos los emojis
-                for (String emoji : emojis) {
-                    MutableText emojiText = Text.literal(emoji + " ")
+                for (String symbol : symbols) {
+                    MutableText symbolText = Text.literal(symbol + " ")
                             .styled(style -> style
                                     .withColor(Formatting.RED)
-                                    .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, emoji))
-                                    .withInsertion(emoji)
+                                    .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, symbol))
+                                    .withInsertion(symbol)
                                     .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click para copiar!"))));
-                    combinedText.append(emojiText);
+                    combinedText.append(symbolText);
                 }
                 context.getSource().sendFeedback(combinedText);
                 return 1;

@@ -12,9 +12,9 @@ import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
-public class SmallCapsConverter {
+public class SmallCapsCommand {
 
-    public SmallCapsConverter() {
+    public SmallCapsCommand() {
         Map<Character, Character> diccionario = getDiccionario();
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("smallcaps")

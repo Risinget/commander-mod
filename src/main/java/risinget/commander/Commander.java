@@ -17,21 +17,22 @@ public class Commander implements ClientModInitializer {
 	public static Logger getLogger(Class<?> clazz) {
 		return LoggerFactory.getLogger(Commander.class.getSimpleName() + " -> " + clazz.getSimpleName());
 	}
+
 	@Override
 	public void onInitializeClient() {
 		// Crear lista de clases que deben ser inicializadas
 		List<Runnable> initializers = Arrays.asList(
 				KeyHandler::new,
-				SmallCapsConverter::new,
-				EmojisCommand::new,
-				Factorial::new,
+				SmallCapsCommand::new,
+				SymbolsCommand::new,
+				FactorialCommand::new,
 				AutoDisconnect::new,
-				WordsList::new,
+				WordsListCommand::new,
 				ColorsCommand::new,
 				TestTextColorsCommand::new,
-				DaysToTime::new,
+				DaysToTimeCommand::new,
 				CoordsConverter::new,
-				ListCommands::new,
+				ListCommandsCommand::new,
 				GeminiAICommand::new,
 				TestCommand::new,
 				HistoryChat::new

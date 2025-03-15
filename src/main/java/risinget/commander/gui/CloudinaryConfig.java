@@ -4,6 +4,7 @@ import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.Option;
 import dev.isxander.yacl3.api.OptionDescription;
 import dev.isxander.yacl3.api.OptionGroup;
+import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import net.minecraft.text.Text;
 import risinget.commander.config.ConfigCommander;
@@ -18,6 +19,16 @@ public class CloudinaryConfig {
                         .name(Text.of("Cloudinary Cloud")) // Nombre del grupo
                         .description(OptionDescription.of(Text.of(
                                 "Configuración de la API KEY. Esta configuración se aplica a Cloudinary."))) // Descripción del grupo
+                        .option(Option.<Boolean>createBuilder()
+                                .name(Text.of("Upload to Cloud")) // Nombre de la opción
+                                .description(OptionDescription.of(Text.of(
+                                        "CLOUD NAME de tu Cloudinary. Para obtener información, visite https://console.cloudinary.com/settings/"))) // Descripción de la opción
+                                .binding(
+                                        ConfigCommander.DEFAULT_ENABLE_UPLOAD_TO_CLOUD, // Valor predeterminado (puede ser una cadena vacía o un valor por defecto)
+                                        ConfigCommander::getEnableUploadToCloud, // Getter: Obtiene el valor actual de la API KEY
+                                        ConfigCommander::setEnableUploadToCloud)
+                                .controller(BooleanControllerBuilder::create) // Controlador para campos de texto
+                                .build())
                         .option(Option.<String>createBuilder()
                                 .name(Text.of("CLOUD NAME")) // Nombre de la opción
                                 .description(OptionDescription.of(Text.of(
@@ -28,7 +39,6 @@ public class CloudinaryConfig {
                                         ConfigCommander::setCloudName)
                                 .controller(StringControllerBuilder::create) // Controlador para campos de texto
                                 .build())
-
                         .option(Option.<String>createBuilder()
                                 .name(Text.of("API-KEY")) // Nombre de la opción
                                 .description(OptionDescription.of(Text.of(

@@ -15,6 +15,7 @@
   },
   "client": [
     "ChatHudMixin",
-    "CloseYACLScreenMixin"
+    "CloseYACLScreenMixin",
+    "TablistMixin"
   ]
 }

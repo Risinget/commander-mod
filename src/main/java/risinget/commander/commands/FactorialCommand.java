@@ -3,13 +3,12 @@ package risinget.commander.commands;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.minecraft.text.Text;
 import risinget.commander.utils.Formatter;
 import risinget.commander.utils.Prefix;
 
-public class Factorial {
+public class FactorialCommand {
     
-    public Factorial(){
+    public FactorialCommand(){
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("factorial")
             .then(ClientCommandManager.argument("integer", IntegerArgumentType.integer())
                 .executes(context -> {

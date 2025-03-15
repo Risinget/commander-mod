@@ -46,6 +46,7 @@ public class GeminiAIConfig {
                                         .formatValue(v -> Text.literal(v.name())))
                                 .build())
 
+
                         .build())
                 .build();
     }

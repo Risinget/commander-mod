@@ -12,6 +12,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.text.ClickEvent;
 import net.minecraft.client.texture.NativeImage;
 import org.spongepowered.asm.mixin.Overwrite;
+import risinget.commander.config.ConfigCommander;
 import risinget.commander.events.CloudinaryScreenshot;
 import risinget.commander.utils.Formatter;
 import risinget.commander.utils.Prefix;
@@ -36,14 +37,15 @@ public class ScreenshotRecorderMixin {
         Util.getIoWorkerExecutor().execute(() -> {
             try {
                 nativeImage.writeTo(screenshotFile);
-                Text customMessage = Formatter.parseAndFormatText(Prefix.COMMANDER+" ")
-                        .append(Text.literal(screenshotFile.getName()).formatted(Formatting.UNDERLINE).styled((style) -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, screenshotFile.getAbsolutePath()))));
+                Text customMessage = Formatter.parseAndFormatText(Prefix.COMMANDER+" ").append(Text.literal(screenshotFile.getName()).formatted(Formatting.UNDERLINE).styled((style) -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, screenshotFile.getAbsolutePath()))));
                 messageReceiver.accept(customMessage);
-                try {
-                    CloudinaryScreenshot.uploadImage(String.valueOf(screenshotFile));
-                    messageReceiver.accept(Text.literal("Enviado a la nube: "+screenshotFile.getName()));
-                }catch (Exception e){
-                    messageReceiver.accept(Text.literal("Error al subir la imagen: "+e.getMessage()));
+                if(ConfigCommander.getEnableUploadToCloud()){
+                    try {
+                        CloudinaryScreenshot.uploadImage(String.valueOf(screenshotFile));
+                        messageReceiver.accept(Text.literal("Enviado a la nube: "+screenshotFile.getName()));
+                    }catch (Exception e){
+                        messageReceiver.accept(Text.literal("Error al subir la imagen: "+e.getMessage()));
+                    }
                 }
             } catch (Exception e) {
                 messageReceiver.accept(Text.translatable("screenshot.failure", e.getMessage()));
