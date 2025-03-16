@@ -16,6 +16,7 @@ import java.io.File;
 import net.minecraft.util.Util;
 import org.slf4j.Logger;
 import risinget.commander.Commander;
+import risinget.commander.config.ConfigCommander;
 import risinget.commander.utils.TextColor;
 
 public class HistoryChat {
@@ -57,7 +58,11 @@ public class HistoryChat {
     }
 
     private boolean onMessage(Text message) {
-        Util.getIoWorkerExecutor().execute(() -> processMessage(message));
+        Util.getIoWorkerExecutor().execute(() -> {
+            if(ConfigCommander.getEnableHistoryChat()){
+                processMessage(message);
+            }
+        });
         return true;
     }
     private static void processMessage(Text message) {
@@ -174,16 +179,30 @@ public class HistoryChat {
             }
         }
 
-        if (component.has("clickEvent")) {
-            JsonObject clickEvent = component.getAsJsonObject("clickEvent");
-            String action = clickEvent.get("action").getAsString();
-            String value = clickEvent.get("value").getAsString();
-        }
-        if (component.has("hoverEvent")) {
-            JsonObject hoverEvent = component.getAsJsonObject("hoverEvent");
-            String action = hoverEvent.get("action").getAsString();
-            JsonObject contents = hoverEvent.getAsJsonObject("contents");
-        }
+//        if (component.has("clickEvent")) {
+//            JsonObject clickEvent = component.getAsJsonObject("clickEvent");
+//
+//            if (clickEvent.has("action") && clickEvent.get("action").isJsonPrimitive()) {
+//                String action = clickEvent.get("action").getAsString();
+//            }
+//
+//            if (clickEvent.has("value") && clickEvent.get("value").isJsonPrimitive()) {
+//                String value = clickEvent.get("value").getAsString();
+//            }
+//        }
+//
+//        if (component.has("hoverEvent")) {
+//            JsonObject hoverEvent = component.getAsJsonObject("hoverEvent");
+//
+//            if (hoverEvent.has("action") && hoverEvent.get("action").isJsonPrimitive()) {
+//                String action = hoverEvent.get("action").getAsString();
+//            }
+//
+//            if (hoverEvent.has("contents") && hoverEvent.get("contents").isJsonObject()) {
+//                JsonObject contents = hoverEvent.getAsJsonObject("contents");
+//            }
+//        }
+
         return builder.toString();
     }
     public static String handleColorCodes(String message, boolean remove) {

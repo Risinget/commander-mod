@@ -110,4 +110,14 @@ public class ConfigCommander {
     public static String getApiSecretCloudinary(){return API_SECRET_CLOUDINARY;}
     public static void setApiSecretCloudinary(String apiSecret){API_SECRET_CLOUDINARY = apiSecret;}
 
+
+    public static boolean DEFAULT_ENABLE_HISTORY_CHAT = true;
+    @SerialEntry(comment = "--------- CONFIGURATION FOR CLOUDINARY ---------")
+    public static boolean enableHistoryChat = DEFAULT_ENABLE_HISTORY_CHAT;
+    public static boolean getEnableHistoryChat(){
+        return enableHistoryChat;
+    }
+    public static void setEnableHistoryChat(boolean bl){
+        enableHistoryChat = bl;
+    }
 }

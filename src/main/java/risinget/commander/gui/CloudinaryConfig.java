@@ -11,53 +11,52 @@ import risinget.commander.config.ConfigCommander;
 public class CloudinaryConfig {
 
     public static ConfigCategory category(){
-        // Setter: Guarda el nuevo valor de la API KEY
         return ConfigCategory.createBuilder()
                 .name(Text.of("Cloudinary Screenshots"))
                 .tooltip(Text.of("Configuraciones para screenshots en la nube"))
                 .group(OptionGroup.createBuilder()
-                        .name(Text.of("Cloudinary Cloud")) // Nombre del grupo
+                        .name(Text.of("Cloudinary Cloud"))
                         .description(OptionDescription.of(Text.of(
-                                "Configuración de la API KEY. Esta configuración se aplica a Cloudinary."))) // Descripción del grupo
+                                "Configuración de la API KEY. Esta configuración se aplica a Cloudinary.")))
                         .option(Option.<Boolean>createBuilder()
-                                .name(Text.of("Upload to Cloud")) // Nombre de la opción
+                                .name(Text.of("Upload to Cloud"))
                                 .description(OptionDescription.of(Text.of(
-                                        "CLOUD NAME de tu Cloudinary. Para obtener información, visite https://console.cloudinary.com/settings/"))) // Descripción de la opción
+                                        "CLOUD NAME de tu Cloudinary. Para obtener información, visite https://console.cloudinary.com/settings/")))
                                 .binding(
-                                        ConfigCommander.DEFAULT_ENABLE_UPLOAD_TO_CLOUD, // Valor predeterminado (puede ser una cadena vacía o un valor por defecto)
-                                        ConfigCommander::getEnableUploadToCloud, // Getter: Obtiene el valor actual de la API KEY
+                                        ConfigCommander.DEFAULT_ENABLE_UPLOAD_TO_CLOUD,
+                                        ConfigCommander::getEnableUploadToCloud,
                                         ConfigCommander::setEnableUploadToCloud)
-                                .controller(BooleanControllerBuilder::create) // Controlador para campos de texto
+                                .controller(BooleanControllerBuilder::create)
                                 .build())
                         .option(Option.<String>createBuilder()
-                                .name(Text.of("CLOUD NAME")) // Nombre de la opción
+                                .name(Text.of("CLOUD NAME"))
                                 .description(OptionDescription.of(Text.of(
-                                        "CLOUD NAME de tu Cloudinary. Para obtener información, visite https://console.cloudinary.com/settings/"))) // Descripción de la opción
+                                        "CLOUD NAME de tu Cloudinary. Para obtener información, visite https://console.cloudinary.com/settings/")))
                                 .binding(
-                                        ConfigCommander.DEFAULT_CLOUD_NAME, // Valor predeterminado (puede ser una cadena vacía o un valor por defecto)
-                                        ConfigCommander::getCloudName, // Getter: Obtiene el valor actual de la API KEY
+                                        ConfigCommander.DEFAULT_CLOUD_NAME,
+                                        ConfigCommander::getCloudName,
                                         ConfigCommander::setCloudName)
-                                .controller(StringControllerBuilder::create) // Controlador para campos de texto
+                                .controller(StringControllerBuilder::create)
                                 .build())
                         .option(Option.<String>createBuilder()
-                                .name(Text.of("API-KEY")) // Nombre de la opción
+                                .name(Text.of("API-KEY"))
                                 .description(OptionDescription.of(Text.of(
-                                        "API KEY de la API de Cloudinary. Para obtener una API KEY, visite https://console.cloudinary.com/settings/ -> API KEYS"))) // Descripción de la opción
+                                        "API KEY de la API de Cloudinary. Para obtener una API KEY, visite https://console.cloudinary.com/settings/ -> API KEYS")))
                                 .binding(
-                                        ConfigCommander.DEFAULT_API_KEY, // Valor predeterminado (puede ser una cadena vacía o un valor por defecto)
-                                        ConfigCommander::getApiKeyCloudinary, // Getter: Obtiene el valor actual de la API KEY
+                                        ConfigCommander.DEFAULT_API_KEY,
+                                        ConfigCommander::getApiKeyCloudinary,
                                         ConfigCommander::setApiKeyCloudinary)
-                                .controller(StringControllerBuilder::create) // Controlador para campos de texto
+                                .controller(StringControllerBuilder::create)
                                 .build())
                         .option(Option.<String>createBuilder()
-                                .name(Text.of("API SECRET")) // Nombre de la opción
+                                .name(Text.of("API SECRET"))
                                 .description(OptionDescription.of(Text.of(
                                         "API SECRET de la API de Cloudinary. Para obtener una API KEY, visite https://console.cloudinary.com/settings/ -> API KEYS"))) // Descripción de la opción
                                 .binding(
-                                        ConfigCommander.DEFAULT_API_SECRET_CLOUDINARY, // Valor predeterminado (puede ser una cadena vacía o un valor por defecto)
-                                        ConfigCommander::getApiSecretCloudinary, // Getter: Obtiene el valor actual de la API KEY
+                                        ConfigCommander.DEFAULT_API_SECRET_CLOUDINARY,
+                                        ConfigCommander::getApiSecretCloudinary,
                                         ConfigCommander::setApiSecretCloudinary)
-                                .controller(StringControllerBuilder::create) // Controlador para campos de texto
+                                .controller(StringControllerBuilder::create)
                                 .build())
                         .build())
                 .build();

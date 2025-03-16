@@ -1,7 +1,6 @@
 package risinget.commander.gui;
 
 import dev.isxander.yacl3.api.*;
-import dev.isxander.yacl3.gui.YACLScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.client.gui.screen.Screen;
@@ -18,6 +17,7 @@ public class ScreenGUI{
             .category(CopyCoordsConfig.category())
             .category(GeminiAIConfig.category())
             .category(CloudinaryConfig.category())
+            .category(ServerConfig.category())
             .build()
             .generateScreen(client.currentScreen);
     }

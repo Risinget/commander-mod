@@ -20,8 +20,5 @@ public class TablistMixin {
     private void onPlayerListHeader(PlayerListHeaderS2CPacket packet, CallbackInfo ci) {
         TabListStorage.setHeader(packet.header());
         TabListStorage.setFooter(packet.footer());
-
-//        LOGGER.info(TabListStorage.getFooter().toString());
-
     }
 }
