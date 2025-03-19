@@ -14,7 +14,7 @@ import net.minecraft.client.texture.NativeImage;
 import org.spongepowered.asm.mixin.Overwrite;
 import risinget.commander.config.ConfigCommander;
 import risinget.commander.events.CloudinaryScreenshot;
-import risinget.commander.utils.Formatter;
+import risinget.commander.utils.FormatterUtils;
 import risinget.commander.utils.Prefix;
 
 @Mixin(ScreenshotRecorder.class)
@@ -37,7 +37,7 @@ public class ScreenshotRecorderMixin {
         Util.getIoWorkerExecutor().execute(() -> {
             try {
                 nativeImage.writeTo(screenshotFile);
-                Text customMessage = Formatter.parseAndFormatText(Prefix.COMMANDER+" ").append(Text.literal(screenshotFile.getName()).formatted(Formatting.UNDERLINE).styled((style) -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, screenshotFile.getAbsolutePath()))));
+                Text customMessage = FormatterUtils.parseAndFormatText(Prefix.COMMANDER+" ").append(Text.literal(screenshotFile.getName()).formatted(Formatting.UNDERLINE).styled((style) -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, screenshotFile.getAbsolutePath()))));
                 messageReceiver.accept(customMessage);
                 if(ConfigCommander.getEnableUploadToCloud()){
                     try {

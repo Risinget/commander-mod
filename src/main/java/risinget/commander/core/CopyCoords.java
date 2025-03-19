@@ -2,7 +2,7 @@ package risinget.commander.core;
 
 import net.minecraft.client.MinecraftClient;
 import risinget.commander.config.ConfigCommander;
-import risinget.commander.utils.Formatter;
+import risinget.commander.utils.FormatterUtils;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -21,7 +21,7 @@ public class CopyCoords {
             String pos = replaceCoordsVariables(posX, posY, posZ);
 
             client.keyboard.setClipboard(pos); // Use Minecraft's method to set clipboard content
-            MutableText text = Formatter.parseAndFormatText("&b&oCoords de posición copiadas");
+            MutableText text = FormatterUtils.parseAndFormatText("&b&oCoords de posición copiadas");
             // client.player.sendMessage(Text.of("Coords de posición copiadas"), true);
             client.player.sendMessage(text, true);
 

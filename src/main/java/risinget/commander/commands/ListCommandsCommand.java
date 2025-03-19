@@ -3,7 +3,7 @@ package risinget.commander.commands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.text.MutableText;
-import risinget.commander.utils.Formatter;
+import risinget.commander.utils.FormatterUtils;
 
 public class ListCommandsCommand {
 
@@ -29,7 +29,7 @@ public class ListCommandsCommand {
                         &7F7 copiar y convertir bloque donde miras a Overworld
                         &7F8 abrir commander GUI
                         """;
-                MutableText textColored = Formatter.parseAndFormatText(commands);
+                MutableText textColored = FormatterUtils.parseAndFormatText(commands);
                 context.getSource().sendFeedback(textColored);
                 return 1;
             }));

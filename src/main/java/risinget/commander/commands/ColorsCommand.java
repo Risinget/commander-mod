@@ -1,6 +1,6 @@
 package risinget.commander.commands;
 
-import risinget.commander.utils.Formatter;
+import risinget.commander.utils.FormatterUtils;
 import risinget.commander.utils.Prefix;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -27,7 +27,7 @@ public class ColorsCommand {
                 MutableText combinedText = Text.literal(Prefix.COMMANDER+"&7 Minecraft colors:\n");
                 for (int i = 0; i < colors.length; i++) {
                     final int index = i;
-                    MutableText colorText = Formatter.parseAndFormatColor(colors[index])
+                    MutableText colorText = FormatterUtils.parseAndFormatColor(colors[index])
                         .styled(style -> style
                         .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,colors[index]))
                         .withInsertion(colors[index])
@@ -42,7 +42,7 @@ public class ColorsCommand {
                 combinedText.append(Text.literal("\n"));
                 for (int i = 0; i < styles.length; i++) {
                     final int index = i;
-                    MutableText styleText = Formatter.parseAndFormatColor(styles[index])
+                    MutableText styleText = FormatterUtils.parseAndFormatColor(styles[index])
                         .styled(style -> style
                         .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,styles[index]))
                         .withInsertion(styles[index])

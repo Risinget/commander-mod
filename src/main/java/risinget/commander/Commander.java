@@ -35,7 +35,10 @@ public class Commander implements ClientModInitializer {
 				ListCommandsCommand::new,
 				GeminiAICommand::new,
 				TestCommand::new,
-				HistoryChat::new
+				SaveItemDataCommand::new,
+				HistoryChat::new,
+				EnchantUtilityCommand::new,
+				TorchUtility::new
 		);
 
 		// Inicializar todas las clases

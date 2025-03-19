@@ -20,7 +20,7 @@ import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import risinget.commander.config.ConfigCommander;
-import risinget.commander.utils.Formatter;
+import risinget.commander.utils.FormatterUtils;
 import risinget.commander.utils.Prefix;
 
 public class GeminiAICommand {
@@ -35,7 +35,7 @@ public class GeminiAICommand {
                         futureResponse.thenAccept(response -> {
                           System.out.println("Respuesta: " + response);
                           String outputWithText = Prefix.COMMANDER + " &7GeminiAI:&r "+response;
-                          MutableText feedbackText = Formatter.parseAndFormatText(outputWithText)
+                          MutableText feedbackText = FormatterUtils.parseAndFormatText(outputWithText)
                               .styled(style -> style
                               .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))
                               .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, response)));
@@ -43,7 +43,7 @@ public class GeminiAICommand {
                         }).exceptionally(ex -> {
                           System.err.println("Error: " + ex.getMessage());
                           String outputWithText = Prefix.COMMANDER + " &7Sucedió un error ): :&r "+ex.getMessage();
-                          MutableText feedbackText = Formatter.parseAndFormatText(outputWithText)
+                          MutableText feedbackText = FormatterUtils.parseAndFormatText(outputWithText)
                               .styled(style -> style
                               .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))
                               .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, ex.getMessage())));

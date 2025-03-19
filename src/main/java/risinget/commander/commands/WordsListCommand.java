@@ -1,6 +1,6 @@
 package risinget.commander.commands;
 
-import risinget.commander.utils.Formatter;
+import risinget.commander.utils.FormatterUtils;
 
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -16,7 +16,7 @@ public class WordsListCommand {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(ClientCommandManager.literal("wordlist").executes(context -> {
                 for (String word : wordList) {
-                    MutableText textWord = Formatter.parseAndFormatText(word)
+                    MutableText textWord = FormatterUtils.parseAndFormatText(word)
                         .styled(style -> style
                             .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, word))
                             .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click para copiar!"))));

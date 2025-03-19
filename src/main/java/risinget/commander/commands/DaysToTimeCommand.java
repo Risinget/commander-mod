@@ -3,7 +3,7 @@ package risinget.commander.commands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.minecraft.text.MutableText;
-import risinget.commander.utils.Formatter;
+import risinget.commander.utils.FormatterUtils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -28,7 +28,7 @@ public class DaysToTimeCommand {
                         "&7Días del mundo:&b " + this.days + "\n" +
                         "&7Tiempo transcurrido en la vida real:&b " + hours + " horas\n" +
                         "&7El mundo se ha iniciado el:&b " + fechaEstimada;
-                    MutableText textColored = Formatter.parseAndFormatText(message);
+                    MutableText textColored = FormatterUtils.parseAndFormatText(message);
                     context.getSource().sendFeedback(textColored);
                     return 1;
                 })

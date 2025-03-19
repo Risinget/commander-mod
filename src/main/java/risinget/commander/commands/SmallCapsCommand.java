@@ -1,6 +1,6 @@
 package risinget.commander.commands;
 import org.jetbrains.annotations.NotNull;
-import risinget.commander.utils.Formatter;
+import risinget.commander.utils.FormatterUtils;
 import risinget.commander.utils.Prefix;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class SmallCapsCommand {
                         }
                     }
                     String outputWithText = Prefix.COMMANDER + " &7Tu texto convertido es:&r "+ textoConvertido;
-                    MutableText feedbackText = Formatter.parseAndFormatText(outputWithText)
+                    MutableText feedbackText = FormatterUtils.parseAndFormatText(outputWithText)
                                     .styled(style -> style
                                     .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))
                                     .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, textoConvertido.toString())));

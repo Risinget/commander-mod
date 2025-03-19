@@ -11,14 +11,11 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import org.slf4j.Logger;
-import org.spongepowered.asm.mixin.Unique;
 import risinget.commander.Commander;
-import risinget.commander.events.HistoryChat;
+import risinget.commander.utils.FormatterUtils;
 import risinget.commander.utils.ImageUtils;
-import risinget.commander.utils.TextColor;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -50,7 +47,7 @@ public class ServerSaver {
     public static void saveMotd() {
         if(client.getNetworkHandler() != null){
             if(client.getNetworkHandler().getServerInfo() != null){
-               saveInfo(client.getNetworkHandler().getServerInfo());
+               saveMotd(client.getNetworkHandler().getServerInfo());
             }
         }
     }
@@ -61,35 +58,24 @@ public class ServerSaver {
         }
     }
 
-    public static void saveTabList(ServerInfo srv){
+    public static void saveTabList(ServerInfo srv) {
         if (srv.label != null) {
             String srvName = srv.address.replace(":", ".");
             Path filePath = client.runDirectory.toPath().resolve("config/commander/servers/" + srvName + "/tablist.txt");
 
             try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
-                Text header = TabListStorage.getHeader();
-                Text footer = TabListStorage.getFooter();
-                String formattedHeader, formattedFooter;
-                try {
-                    JsonObject jsonHeader = JsonParser.parseString(TextColor.toJson(header)).getAsJsonObject();
-                    JsonObject jsonFooter = JsonParser.parseString(TextColor.toJson(footer)).getAsJsonObject();
-                    LOGGER.info(jsonHeader.toString());
-                    LOGGER.info(jsonFooter.toString());
-                    formattedHeader = HistoryChat.handleColorCodes(HistoryChat.formatJsonMessage(jsonHeader), false);
-                    formattedFooter = HistoryChat.handleColorCodes(HistoryChat.formatJsonMessage(jsonFooter), false);
-                } catch (JsonSyntaxException | IllegalStateException e) {
-                    formattedHeader = HistoryChat.handleColorCodes(TextColor.toJson(header), false);
-                    formattedFooter = HistoryChat.handleColorCodes(TextColor.toJson(footer), false);
-                }
+                String formattedHeader = FormatterUtils.getColoredText(TabListStorage.getHeader());
+                String formattedFooter = FormatterUtils.getColoredText(TabListStorage.getFooter());
 
                 writer.append(formattedHeader.replace("\"", "").replace("\\n", "\n"));
                 writer.append(formattedFooter.replace("\"", "").replace("\\n", "\n"));
                 writer.newLine();
             } catch (IOException e) {
-                LOGGER.error(e.getMessage());
+                LOGGER.error("Error writing tab list for {}: {}", srvName, e.getMessage(), e);
             }
         }
     }
+
 
     public static void openFolderCurrentServer(){
         if(client.getNetworkHandler() !=null && client.getNetworkHandler().getServerInfo() != null)
@@ -108,12 +94,8 @@ public class ServerSaver {
 
     public static void copyMOTD(MultiplayerServerListWidget serverListWidget) {
         getSelectedServer(serverListWidget).ifPresent(srv -> {
-            try {
-                JsonObject json = JsonParser.parseString(TextColor.toJson(srv.label)).getAsJsonObject();
-                client.keyboard.setClipboard(HistoryChat.handleColorCodes(HistoryChat.formatJsonMessage(json), false));
-            } catch (IllegalStateException | JsonSyntaxException e) {
-                client.keyboard.setClipboard(TextColor.toJson(srv.label));
-            }
+            String motd = FormatterUtils.getColoredText(srv.label);
+            client.keyboard.setClipboard(motd);
         });
     }
 
@@ -127,7 +109,7 @@ public class ServerSaver {
                         ServerInfo srv = serverList.get(i);
                         LOGGER.info(serverInfoMap.get(srv.address));
                         saveIcon(serverInfoMap.get(srv.address), srv.address);
-                        saveInfo(serverList.get(i));
+                        saveMotd(serverList.get(i));
                     }
                 });
             }
@@ -181,7 +163,7 @@ public class ServerSaver {
 
     public static void saveIcon(String base64icon, String address) {
         String srvName = address.replace(":", ".") ;
-        Path filePath = client.runDirectory.toPath().resolve("config/commander/servers/" + srvName + "/"+ srvName +".png");
+        Path filePath = client.runDirectory.toPath().resolve("config/commander/servers/" + srvName + "/logo.png");
         try {
             Files.createDirectories(filePath.getParent());
             ImageUtils.saveBase64AsImage(base64icon, filePath.toString());
@@ -191,20 +173,13 @@ public class ServerSaver {
     }
 
 
-    public static void saveInfo(ServerInfo srv) {
+    public static void saveMotd(ServerInfo srv) {
         if (srv.label != null) {
             String srvName = srv.address.replace(":", ".");
-            Path filePath = client.runDirectory.toPath().resolve("config/commander/servers/" + srvName + "/" + srvName + ".txt");
+            Path filePath = client.runDirectory.toPath().resolve("config/commander/servers/" + srvName + "/motd.txt");
 
             try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
-                String formattedText;
-                try {
-                    JsonObject json = JsonParser.parseString(TextColor.toJson(srv.label)).getAsJsonObject();
-                    formattedText = HistoryChat.handleColorCodes(HistoryChat.formatJsonMessage(json), false);
-                } catch (JsonSyntaxException | IllegalStateException e) {
-                    formattedText = HistoryChat.handleColorCodes(TextColor.toJson(srv.label), false);
-                }
-
+                String formattedText = FormatterUtils.getColoredText(srv.label);
                 writer.write(formattedText);
                 writer.newLine();
             } catch (IOException e) {
@@ -212,8 +187,6 @@ public class ServerSaver {
             }
         }
     }
-
-
 
     public static void loadServerList() throws IOException {
         if (isServerListLoaded) {
