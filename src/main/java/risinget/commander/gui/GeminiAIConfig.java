@@ -14,7 +14,7 @@ public class GeminiAIConfig {
 
     public static ConfigCategory category(){
         return ConfigCategory.createBuilder()
-                .name(Text.of("Gemini AI"))
+                .name(Text.of("GeminiAI"))
                 .tooltip(Text.of("Configuraciones para Gemini AI"))
                 .group(OptionGroup.createBuilder()
                         .name(Text.of("Gemini AI")) // Nombre del grupo

@@ -8,6 +8,8 @@ import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import dev.isxander.yacl3.api.controller.StringControllerBuilder;
 import net.minecraft.text.Text;
 import risinget.commander.config.ConfigCommander;
+import risinget.commander.gui.options.BooleanOption;
+
 public class CloudinaryConfig {
 
     public static ConfigCategory category(){
@@ -26,7 +28,7 @@ public class CloudinaryConfig {
                                         ConfigCommander.DEFAULT_ENABLE_UPLOAD_TO_CLOUD,
                                         ConfigCommander::getEnableUploadToCloud,
                                         ConfigCommander::setEnableUploadToCloud)
-                                .controller(BooleanControllerBuilder::create)
+                                .controller(bln -> BooleanControllerBuilder.create(bln).formatValue(BooleanOption::isEnabled))
                                 .build())
                         .option(Option.<String>createBuilder()
                                 .name(Text.of("CLOUD NAME"))

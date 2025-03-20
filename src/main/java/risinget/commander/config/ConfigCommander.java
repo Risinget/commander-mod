@@ -9,8 +9,6 @@ import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
 import risinget.commander.enums.GeminiModel;
 
-import java.io.Serial;
-
 public class ConfigCommander {
 
     // Valores predeterminados (inmutables)
@@ -22,11 +20,11 @@ public class ConfigCommander {
     public static final String DEFAULT_CLOUD_NAME = "cloud_name_cloudinary";
     public static final String DEFAULT_API_SECRET_CLOUDINARY = "api_secret_id";
     public static final boolean DEFAULT_ENABLE_UPLOAD_TO_CLOUD = false;
-
+    public static final boolean DEFAULT_ENABLE_SCREENSHOT_BEFORE_DISCONNECT = true;
     public static final ConfigClassHandler<ConfigCommander> HANDLER = ConfigClassHandler.createBuilder(ConfigCommander.class)
-           .id(Identifier.of("risinget", "comander/risinget_comander.json5"))
+            .id(Identifier.of("risinget", "commander/risinget_commander.json5"))
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
-            .setPath(FabricLoader.getInstance().getConfigDir().resolve("commander/risinget_comander.json5"))
+            .setPath(FabricLoader.getInstance().getConfigDir().resolve("commander/risinget_commander.json5"))
             .appendGsonBuilder(GsonBuilder::setPrettyPrinting) // Corrected method name
             .setJson5(true)
             .build())
@@ -39,6 +37,11 @@ public class ConfigCommander {
     public static void setOn(boolean isOn){
         activarDesconexion = isOn;
     }
+
+    @SerialEntry
+    public static boolean enableSsBeforeDisc = DEFAULT_ENABLE_SCREENSHOT_BEFORE_DISCONNECT;
+    public static boolean getEnableSsBeforeDisc(){return enableSsBeforeDisc;}
+    public static void setEnableSsBeforeDisc(boolean bln){ enableSsBeforeDisc = bln;}
 
     @SerialEntry
     public static int desconectarMenorVidaQue = DEFAULT_DESCONECTAR_MENOR_VIDA_QUE;
@@ -112,7 +115,7 @@ public class ConfigCommander {
 
 
     public static boolean DEFAULT_ENABLE_HISTORY_CHAT = true;
-    @SerialEntry(comment = "--------- CONFIGURATION FOR CLOUDINARY ---------")
+    @SerialEntry
     public static boolean enableHistoryChat = DEFAULT_ENABLE_HISTORY_CHAT;
     public static boolean getEnableHistoryChat(){
         return enableHistoryChat;
@@ -120,4 +123,22 @@ public class ConfigCommander {
     public static void setEnableHistoryChat(boolean bl){
         enableHistoryChat = bl;
     }
+
+
+    public static final boolean DEFAULT_ENABLED_TORCH_CREATIVE = false;
+    @SerialEntry(comment = "--------- CONFIGURATION FOR MISC FUNCTIONS ---------")
+    public static boolean enabledTorchCreative = DEFAULT_ENABLED_TORCH_CREATIVE;
+    public static boolean getEnabledTorchCreative(){
+        return enabledTorchCreative;
+    }
+    public static void setEnabledTorchCreative(boolean bln){
+        enabledTorchCreative = bln;
+    }
+
+    @SerialEntry
+    public static final String DEFAULT_CUSTOM_NAME = "A simple dream";
+    public static String customName = DEFAULT_CUSTOM_NAME;
+    public static String getCustomName(){ return customName;}
+    public static void setCustomName(String name){customName = name;}
+
 }

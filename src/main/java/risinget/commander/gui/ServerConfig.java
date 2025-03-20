@@ -5,11 +5,13 @@ import dev.isxander.yacl3.api.controller.BooleanControllerBuilder;
 import net.minecraft.text.Text;
 import risinget.commander.config.ConfigCommander;
 import risinget.commander.core.ServerSaver;
+import risinget.commander.gui.options.BooleanOption;
+
 public class ServerConfig {
 
     public static ConfigCategory category(){
         return ConfigCategory.createBuilder()
-                .name(Text.of("Configuración del Servidor"))
+                .name(Text.of("Server"))
                 .group(OptionGroup.createBuilder()
                         .name(Text.of("Server configurations"))
                         .description(OptionDescription.of(Text.of(
@@ -23,7 +25,7 @@ public class ServerConfig {
                                         ConfigCommander::getEnableHistoryChat,
                                         ConfigCommander::setEnableHistoryChat
                                 )
-                                .controller(BooleanControllerBuilder::create)
+                                .controller(bln -> BooleanControllerBuilder.create(bln).formatValue(BooleanOption::isEnabled))
                                 .build())
                         .option(ButtonOption.createBuilder()
                                 .name(Text.of("Save Icon Server"))

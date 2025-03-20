@@ -13,16 +13,18 @@ public class ScreenGUI{
     public static Screen yacl(MinecraftClient client){
         return YetAnotherConfigLib.createBuilder()
             .title(Text.of("Configuración de Commander"))
+//            .screenInit(yacl -> ConfigCommander.HANDLER.load())
             .category(AutoDisconectConfig.category())
             .category(CopyCoordsConfig.category())
             .category(GeminiAIConfig.category())
             .category(CloudinaryConfig.category())
             .category(ServerConfig.category())
+            .category(OthersConfig.category())
+            .save(ConfigCommander.HANDLER::save)
             .build()
             .generateScreen(client.currentScreen);
     }
     public static void openGui(){
-        ConfigCommander.HANDLER.load();
         client.setScreen(ScreenGUI.yacl(client));
     }
 }

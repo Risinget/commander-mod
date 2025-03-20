@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import risinget.commander.Commander;
+import risinget.commander.config.ConfigCommander;
 import risinget.commander.events.AutoDisconnect;
 import java.io.File;
 
@@ -21,7 +22,9 @@ public class AutoDisconnectMixin {
 	@Inject(at = @At("HEAD"), method = "disconnect(Lnet/minecraft/client/MinecraftClient;F)V")
 	private static void beforeDisconnect(MinecraftClient client, float health, CallbackInfo info) {
 		File gameDirectory = client.runDirectory;
-		ScreenshotRecorder.saveScreenshot(gameDirectory, null, client.getFramebuffer(), (text) -> LOGGER.info("SCREENSHOT TAKEN BEFORE DEATH"));
+		if(ConfigCommander.getEnableSsBeforeDisc()){
+			ScreenshotRecorder.saveScreenshot(gameDirectory, null, client.getFramebuffer(), (text) -> LOGGER.info("SCREENSHOT TAKEN BEFORE DEATH"));
+		}
 	}
 
 }

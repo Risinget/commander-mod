@@ -12,10 +12,10 @@ public class CopyCoordsConfig {
 
     public static ConfigCategory category(){
         return ConfigCategory.createBuilder()
-            .name(Text.of("Coords Copy"))
+            .name(Text.of("CopyCoords"))
             .tooltip(Text.of("Configuraciones para Coords Copy"))
             .group(OptionGroup.createBuilder()
-                    .name(Text.of("Coords Copy "))
+                    .name(Text.of("CopyCoords"))
                     .description(OptionDescription.of(Text.of(
                             "Configuración de la copia de coordenadas. Esta configuración se aplica a la copia de coordenadas.")))
                     .option(Option.<String>createBuilder()
@@ -53,7 +53,7 @@ public class CopyCoordsConfig {
                                     "Hay tres variables X, Y y Z que se pueden usar en el formato de coordenadas. Estas variables se reemplazarán por las coordenadas del jugador.")))
                             .binding(ConfigCommander.DEFAULT_COORDS_FORMAT,
                                     ConfigCommander::getFormatCoordsNether,
-                                    ConfigCommander::setFormatCoordsOverworld)
+                                    ConfigCommander::setFormatCoordsNether)
                             .controller(StringControllerBuilder::create)
                             .build())
 

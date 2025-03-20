@@ -12,7 +12,6 @@ import java.util.Objects;
 public class AutoDisconnect {
 
 	public AutoDisconnect(){
-		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> ConfigCommander.setOn(false));
 		ClientTickEvents.END_CLIENT_TICK.register(this::check);
 	}
 

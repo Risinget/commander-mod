@@ -1,9 +1,11 @@
 package risinget.commander;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import risinget.commander.commands.*;
+import risinget.commander.config.ConfigCommander;
 import risinget.commander.events.AutoDisconnect;
 import risinget.commander.events.HistoryChat;
 import risinget.commander.core.CoordsConverter;
@@ -20,7 +22,11 @@ public class Commander implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		// Crear lista de clases que deben ser inicializadas
+		// Variables de initialization al entrar a un mundo
+		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+			ConfigCommander.HANDLER.load();
+			ConfigCommander.setOn(false);
+		});
 		List<Runnable> initializers = Arrays.asList(
 				KeyHandler::new,
 				SmallCapsCommand::new,
