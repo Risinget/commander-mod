@@ -1,11 +1,11 @@
 package risinget.commander.commands;
 
+import net.minecraft.text.HoverEvent;
 import risinget.commander.utils.FormatterUtils;
 import risinget.commander.utils.Prefix;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.text.ClickEvent;
-import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 public class ColorsCommand {
@@ -28,10 +28,12 @@ public class ColorsCommand {
                 for (int i = 0; i < colors.length; i++) {
                     final int index = i;
                     MutableText colorText = FormatterUtils.parseAndFormatColor(colors[index])
-                        .styled(style -> style
-                        .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,colors[index]))
-                        .withInsertion(colors[index])
-                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Shift + Click para Insertar!"))));
+                            .styled(style -> style
+                                    .withClickEvent(new ClickEvent.CopyToClipboard(colors[index]))
+                                    .withInsertion(colors[index])
+                                    .withHoverEvent(new HoverEvent.ShowText(Text.literal("Shift + Click para Insertar!")))
+                            );
+
                     combinedText.append(colorText);
                     if ((index + 1) % 4 == 0) {
                         combinedText.append(Text.literal("\n"));
@@ -44,9 +46,9 @@ public class ColorsCommand {
                     final int index = i;
                     MutableText styleText = FormatterUtils.parseAndFormatColor(styles[index])
                         .styled(style -> style
-                        .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,styles[index]))
+                        .withClickEvent(new ClickEvent.CopyToClipboard(styles[index]))
                         .withInsertion(styles[index])
-                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click para copiar!"))));
+                        .withHoverEvent(new HoverEvent.ShowText(Text.literal("Click para copiar!"))));
                     combinedText.append(styleText);
                     if ((index + 1) % 2 == 0) {
                         combinedText.append(Text.literal("\n"));

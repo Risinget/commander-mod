@@ -22,4 +22,8 @@ Se ha añadido el comando `/gemini <prompt>` en Minecraft Java 1.21.4, permitien
         - **Obtén el icono de tu servidor**:  
           Guarda el icono de tu servidor en formato PNG.
         - **Obtén el MOTD de tu servidor**:  
-          Copia el MOTD (Message of the Day) de tu servidor para usarlo como referencia o inspiración.  
+          Copia el MOTD (Message of the Day) de tu servidor para usarlo como referencia o inspiración.
+
+# 13/04/2025 Update
+- **Descripción**:
+    - Actualizacion a 1.21.4 -> 1.21.11

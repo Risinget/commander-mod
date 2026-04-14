@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.text.Text;
@@ -55,8 +56,8 @@ public class SaveItemDataCommand {
                                 String texto = StringArgumentType.getString(context, "texto");
                                 MinecraftClient client = context.getSource().getClient();
                                 if (client.player != null && client.player.getMainHandStack() != null) {
-                                    ItemStack stack = client.player.getMainHandStack();
-                                    NbtElement nbt = stack.toNbt(client.player.getRegistryManager());
+                                    ItemStack stack = client.player.getMainHandStack().getItem().getDefaultStack().;
+                                    NbtElement nbt = stack.(client.player.getRegistryManager());
                                     if (nbt != null) {
                                         LOGGER.info("NBT INFO ->" + nbt.toString());
                                     }

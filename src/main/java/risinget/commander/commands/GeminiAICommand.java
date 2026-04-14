@@ -37,16 +37,16 @@ public class GeminiAICommand {
                           String outputWithText = Prefix.COMMANDER + " &7GeminiAI:&r "+response;
                           MutableText feedbackText = FormatterUtils.parseAndFormatText(outputWithText)
                               .styled(style -> style
-                              .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))
-                              .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, response)));
+                              .withHoverEvent(new HoverEvent.ShowText(Text.literal("Click para copiar")))
+                              .withClickEvent(new ClickEvent.CopyToClipboard(response)));
                           context.getSource().sendFeedback(feedbackText);
                         }).exceptionally(ex -> {
                           System.err.println("Error: " + ex.getMessage());
                           String outputWithText = Prefix.COMMANDER + " &7Sucedió un error ): :&r "+ex.getMessage();
                           MutableText feedbackText = FormatterUtils.parseAndFormatText(outputWithText)
                               .styled(style -> style
-                              .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))
-                              .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, ex.getMessage())));
+                              .withHoverEvent(new HoverEvent.ShowText(Text.literal("Click para copiar")))
+                              .withClickEvent(new ClickEvent.CopyToClipboard(ex.getMessage())));
                           context.getSource().sendFeedback(feedbackText);
                           return null;
                         });
