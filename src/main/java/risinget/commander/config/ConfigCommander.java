@@ -136,7 +136,7 @@ public class ConfigCommander {
     }
 
     @SerialEntry
-    public static final String DEFAULT_CUSTOM_NAME = "A simple dream";
+    public static String DEFAULT_CUSTOM_NAME = "A simple dream";
     public static String customName = DEFAULT_CUSTOM_NAME;
     public static String getCustomName(){ return customName;}
     public static void setCustomName(String name){customName = name;}

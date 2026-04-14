@@ -69,7 +69,7 @@ public class HistoryChat {
             // Guardar el mensaje en texto plano
             String msgPlain = message.getString();
             FileUtils.saveMessage(FormatterUtils.handleColorCodes(msgPlain, true), logFile);
-            // Verificar si el JSON está vacío
+            // Verificar si el JSON está vacío a colores
             if (json != null && !json.isEmpty()) {
                 try {
                     // this logger is for debugging text jsons

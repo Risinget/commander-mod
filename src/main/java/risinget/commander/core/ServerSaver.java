@@ -107,7 +107,6 @@ public class ServerSaver {
                 Util.getIoWorkerExecutor().execute(() -> {
                     for(int i = 0; i < serverList.size(); i++){
                         ServerInfo srv = serverList.get(i);
-                        LOGGER.info(serverInfoMap.get(srv.address));
                         saveIcon(serverInfoMap.get(srv.address), srv.address);
                         saveMotd(serverList.get(i));
                     }
@@ -135,10 +134,15 @@ public class ServerSaver {
         getSelectedServer(serverListWidget).ifPresent((srv)-> {
             try {
                 loadServerList();
+//                LOGGER.info("BUSCANDO: {} para address: {}", serverInfoMap.get(srv.address), srv.address);
+//                LOGGER.info("=== CONTENIDO DEL MAP ===");
+//                serverInfoMap.forEach((key, value) -> {
+//                    LOGGER.info("KEY='{}' VALUE='{}'", key, value);
+//                });
+                saveIcon(serverInfoMap.get(srv.address), srv.address);
             } catch (IOException e) {
                 LOGGER.warn("Invalid: {}", e.getMessage());
             }
-            saveIcon(serverInfoMap.get(srv.address), srv.address);
         });
     }
 
@@ -197,8 +201,8 @@ public class ServerSaver {
             Optional<NbtList> nbtList = nbtCompound.getList("servers");
             for (int i = 0; i < nbtList.get().size(); i++) {
                 Optional<NbtCompound> serverData = nbtList.get().getCompound(i);
-                String address = String.valueOf(serverData.get().get("ip"));
-                String icon = String.valueOf(serverData.get().get("icon"));
+                String address = serverData.get().get("ip").toString().replace("\"", "");
+                String icon = serverData.get().get("icon").toString().replace("\"", "");
                 serverInfoMap.put(address,icon);
             }
             isServerListLoaded = true;

@@ -1,8 +1,13 @@
 package risinget.commander.utils;
 
 import com.google.gson.*;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.registry.BuiltinRegistries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextCodecs;
+import net.minecraft.text.object.TextObjectContents;
 import net.minecraft.util.Formatting;
 import risinget.commander.Commander;
 import org.slf4j.Logger;
@@ -24,15 +29,15 @@ public class FormatterUtils {
 
 
     public static String toJson(Text message) {
-        try {
-            Gson gson = new GsonBuilder().create();
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("text", message.getString());
-            return gson.toJson(jsonObject);
-        } catch (Exception e) {
-            LOGGER.warn("Failed to convert Text to JSON, falling back to string representation", e);
-            return message.getString();
-        }
+        Gson gson = new Gson();
+        // Serializar a JsonElement, luego a String
+        JsonElement jsonElement = TextCodecs.CODEC
+                .encodeStart(JsonOps.INSTANCE, message)
+                .getOrThrow();
+
+        return gson.toJson(jsonElement);
+//        Text.object(TextObjectContents).toJson(message, registry);
+//        return Text.Serialization.toJsonString(message, registry);
     }
 
     public static String formatJsonMessage(JsonObject jsonObject) {
@@ -143,7 +148,7 @@ public class FormatterUtils {
         if (remove) {
             return message.replaceAll(regex, "");
         } else {
-            return message.replaceAll("§", "&");
+            return message.replace("§", "&");
         }
     }
     public static String getColorCode(String colorName) {

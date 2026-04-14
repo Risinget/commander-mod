@@ -11,7 +11,7 @@ import risinget.commander.core.CoordsConverter;
 import risinget.commander.gui.ScreenGUI;
 
 public class KeyHandler {
-    private static final KeyBinding openGuiF8                 = KeyBindingHelper.registerKeyBinding(new KeyBinding("Open Commander Config", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F8, new KeyBinding.Category(Identifier.tryParse("commander"))));
+    private static final KeyBinding openGuiF8                 = KeyBindingHelper.registerKeyBinding(new KeyBinding("Open Commander Config", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F8, new KeyBinding.Category(Identifier.of("commander"))));
     private static final KeyBinding copyAndConvertToNether    = KeyBindingHelper.registerKeyBinding(new KeyBinding("Copiar y convertir BlocksPosViewing a Nether", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F6, new KeyBinding.Category(Identifier.tryParse("commander"))));
     private static final KeyBinding copyAndConvertToOverworld = KeyBindingHelper.registerKeyBinding(new KeyBinding("Copiar y convertir BlocksPosViewing a Overworld", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F7, new KeyBinding.Category(Identifier.tryParse("commander"))));
     private static final KeyBinding copyPosKey                = KeyBindingHelper.registerKeyBinding(new KeyBinding("Copiar posición", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F9, new KeyBinding.Category(Identifier.tryParse("commander"))));
