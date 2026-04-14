@@ -194,11 +194,11 @@ public class ServerSaver {
         }
         NbtCompound nbtCompound = NbtIo.read(client.runDirectory.toPath().resolve("servers.dat"));
         if(nbtCompound != null){
-            NbtList nbtList = nbtCompound.getList("servers", NbtElement.COMPOUND_TYPE);
-            for (int i = 0; i < nbtList.size(); i++) {
-                NbtCompound serverData = nbtList.getCompound(i);
-                String address = serverData.getString("ip");
-                String icon = serverData.getString("icon");
+            Optional<NbtList> nbtList = nbtCompound.getList("servers");
+            for (int i = 0; i < nbtList.get().size(); i++) {
+                Optional<NbtCompound> serverData = nbtList.get().getCompound(i);
+                String address = String.valueOf(serverData.get().get("ip"));
+                String icon = String.valueOf(serverData.get().get("icon"));
                 serverInfoMap.put(address,icon);
             }
             isServerListLoaded = true;

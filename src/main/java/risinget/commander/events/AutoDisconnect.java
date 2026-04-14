@@ -26,8 +26,8 @@ public class AutoDisconnect {
 	public void disconnect(MinecraftClient client, float health){
 		if (client.world == null) return;
 		if (client.isInSingleplayer()) {
-			client.world.disconnect();
-			client.disconnect();
+			client.world.disconnect(Text.literal("Razón: BAJA VIDA A " + health));
+			client.disconnect(Text.literal("Razón: BAJA VIDA A " + health));
 			client.setScreen(new TitleScreen());
 		} else{
 			Objects.requireNonNull(client.getNetworkHandler()).getConnection().disconnect(Text.literal("BAJA VIDA A " + health));

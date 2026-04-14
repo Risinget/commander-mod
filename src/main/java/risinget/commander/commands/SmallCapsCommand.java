@@ -35,8 +35,8 @@ public class SmallCapsCommand {
                     String outputWithText = Prefix.COMMANDER + " &7Tu texto convertido es:&r "+ textoConvertido;
                     MutableText feedbackText = FormatterUtils.parseAndFormatText(outputWithText)
                                     .styled(style -> style
-                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,Text.literal("Click para copiar")))
-                                    .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, textoConvertido.toString())));
+                                    .withHoverEvent(new HoverEvent.ShowText(Text.literal("Click para copiar")))
+                                    .withClickEvent(new ClickEvent.CopyToClipboard(textoConvertido.toString())));
                     context.getSource().sendFeedback(feedbackText);
                     return 1;
                 })

@@ -19,8 +19,8 @@ public class TestTextColorsCommand {
                         String textToTest = StringArgumentType.getString(context, "text");
                         MutableText textColored = FormatterUtils.parseAndFormatText(textToTest)
                             .styled(style -> style
-                            .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, textToTest))
-                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click para copiar!"))));
+                            .withClickEvent(new ClickEvent.CopyToClipboard(textToTest))
+                            .withHoverEvent(new HoverEvent.ShowText(Text.literal("Click para copiar!"))));
                         context.getSource().sendFeedback(textColored);
 //                        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(textColored);
                         return 1;

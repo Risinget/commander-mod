@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.ComponentMap;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.item.Item;
@@ -56,11 +57,13 @@ public class SaveItemDataCommand {
                                 String texto = StringArgumentType.getString(context, "texto");
                                 MinecraftClient client = context.getSource().getClient();
                                 if (client.player != null && client.player.getMainHandStack() != null) {
-                                    ItemStack stack = client.player.getMainHandStack().getItem().getDefaultStack().;
-                                    NbtElement nbt = stack.(client.player.getRegistryManager());
-                                    if (nbt != null) {
-                                        LOGGER.info("NBT INFO ->" + nbt.toString());
-                                    }
+                                    ComponentMap components = client.player.getMainHandStack().getItem().getDefaultStack().getComponents();
+                                    ItemStack stack = client.player.getMainHandStack();
+
+                                    components.forEach((c) -> {;
+                                        LOGGER.info("Component Type: {}", c.toString());
+                                        LOGGER.info("Component Data: {}", c.value().toString());
+                                    });
 
                                     List<Text> loreList = List.of(
                                             FormatterUtils.parseAndFormatColor("&b&k!!&r &cDDLS ON TOP &b&k!!")

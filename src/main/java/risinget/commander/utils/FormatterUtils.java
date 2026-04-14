@@ -1,13 +1,12 @@
 package risinget.commander.utils;
 
 import com.google.gson.*;
-import net.minecraft.registry.BuiltinRegistries;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import risinget.commander.Commander;
 import org.slf4j.Logger;
+
 
 public class FormatterUtils {
 
@@ -25,10 +24,15 @@ public class FormatterUtils {
 
 
     public static String toJson(Text message) {
-        RegistryWrapper.WrapperLookup registry = BuiltinRegistries.createWrapperLookup();
-        if (registry == null) { LOGGER.info("Local RegistryManager is not available"); }
-        assert registry != null;
-        return Text.Serialization.toJsonString(message, registry);
+        try {
+            Gson gson = new GsonBuilder().create();
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("text", message.getString());
+            return gson.toJson(jsonObject);
+        } catch (Exception e) {
+            LOGGER.warn("Failed to convert Text to JSON, falling back to string representation", e);
+            return message.getString();
+        }
     }
 
     public static String formatJsonMessage(JsonObject jsonObject) {

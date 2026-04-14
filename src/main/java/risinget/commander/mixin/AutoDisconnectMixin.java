@@ -23,7 +23,7 @@ public class AutoDisconnectMixin {
 	private static void beforeDisconnect(MinecraftClient client, float health, CallbackInfo info) {
 		File gameDirectory = client.runDirectory;
 		if(ConfigCommander.getEnableSsBeforeDisc()){
-			ScreenshotRecorder.saveScreenshot(gameDirectory, null, client.getFramebuffer(), (text) -> LOGGER.info("SCREENSHOT TAKEN BEFORE DEATH"));
+			ScreenshotRecorder.saveScreenshot(gameDirectory, client.getFramebuffer(), (text) -> LOGGER.info("SCREENSHOT TAKEN BEFORE DEATH"));
 		}
 	}
 

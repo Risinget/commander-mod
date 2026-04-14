@@ -26,17 +26,6 @@ repositories {
 		name = "Terraformers"
 		url = uri("https://maven.terraformersmc.com")
 	}
-
-	maven {
-		name = "meteor-maven"
-		url = uri("https://maven.meteordev.org/releases")
-	}
-	maven {
-		name = "meteor-maven-snapshots"
-		url = uri("https://maven.meteordev.org/snapshots")
-	}
-
-
 }
 
 dependencies {
@@ -57,8 +46,8 @@ dependencies {
 	implementation 'com.cloudinary:cloudinary-core:2.3.2'
 	implementation 'com.cloudinary:cloudinary-http5:2.3.2' // Use the latest version
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
-	modRuntimeOnly 'com.terraformersmc:modmenu:13.0.2'
-	modRuntimeOnly "meteordevelopment:meteor-client:1.21.4-SNAPSHOT" // Usa la versión más reciente
+	modRuntimeOnly 'com.terraformersmc:modmenu:17.0.0'
+//	modRuntimeOnly "meteordevelopment:meteor-:1.21.11-SNAPSHOT" // Usa la versión más reciente
 
 }
 

@@ -18,8 +18,8 @@ public class WordsListCommand {
                 for (String word : wordList) {
                     MutableText textWord = FormatterUtils.parseAndFormatText(word)
                         .styled(style -> style
-                            .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, word))
-                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click para copiar!"))));
+                            .withClickEvent(new ClickEvent.CopyToClipboard(word))
+                            .withHoverEvent(new HoverEvent.ShowText(Text.literal("Click para copiar!"))));
                     context.getSource().sendFeedback(textWord);
                 }
                 return 1;

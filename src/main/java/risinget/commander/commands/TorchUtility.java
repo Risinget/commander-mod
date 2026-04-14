@@ -27,7 +27,7 @@ public class TorchUtility {
         if(!ConfigCommander.getEnabledTorchCreative()){return;}
         if (client.player != null && client.player.getAbilities().creativeMode) {
             ItemStack torchStack = new ItemStack(Items.TORCH, 64);
-            client.player.getInventory().setStack(client.player.getInventory().selectedSlot, torchStack);
+            client.player.getInventory().setStack(client.player.getInventory().getSelectedSlot(), torchStack);
             EnchantUtilityCommand.enchant(torchStack, 127); // Asegúrate de que el método acepte ItemStack
             hasEnchantedTorch = true;
             ConfigCommander.setEnabledTorchCreative(false);

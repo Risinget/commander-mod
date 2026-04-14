@@ -31,9 +31,9 @@ public class SymbolsCommand {
                     MutableText symbolText = Text.literal(symbol + " ")
                             .styled(style -> style
                                     .withColor(Formatting.RED)
-                                    .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, symbol))
+                                    .withClickEvent(new ClickEvent.CopyToClipboard(symbol))
                                     .withInsertion(symbol)
-                                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("Click para copiar!"))));
+                                    .withHoverEvent(new HoverEvent.ShowText(Text.literal("Click para copiar!"))));
                     combinedText.append(symbolText);
                 }
                 context.getSource().sendFeedback(combinedText);
