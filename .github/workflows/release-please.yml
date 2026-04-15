@@ -61,7 +61,18 @@ jobs:
           VERSION=$(cat version.txt)
           echo "Minecraft Version: $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Crear o mover tag a commit actual
+        run: |
+          git tag -f "v${{ env.VERSION }}"
+          git push origin "v${{ env.VERSION }}" --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Verificar si el tag ya existe
         id: check_tag
         run: |
