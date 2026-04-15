@@ -2,8 +2,6 @@ package risinget.commander;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.network.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import risinget.commander.commands.*;

@@ -12,11 +12,17 @@ import risinget.commander.gui.ScreenGUI;
 
 public class KeyHandler {
 
-    private static final KeyMapping openGuiF8                 = KeyBindingHelper.registerKeyBinding(new KeyMapping("Open Commander Config",                           InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F8, new KeyMapping.Category(Identifier.tryParse("commander"))));
-    private static final KeyMapping copyAndConvertToNether    = KeyBindingHelper.registerKeyBinding(new KeyMapping("Copiar y convertir BlocksPosViewing a Nether",    InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F6, new KeyMapping.Category(Identifier.tryParse("commander"))));
-    private static final KeyMapping copyAndConvertToOverworld = KeyBindingHelper.registerKeyBinding(new KeyMapping("Copiar y convertir BlocksPosViewing a Overworld", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F7, new KeyMapping.Category(Identifier.tryParse("commander"))));
-    private static final KeyMapping copyPosKey                = KeyBindingHelper.registerKeyBinding(new KeyMapping("Copiar posición",                                 InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F9, new KeyMapping.Category(Identifier.tryParse("commander"))));
-    private static final KeyMapping copyPosViewing            = KeyBindingHelper.registerKeyBinding(new KeyMapping("Copiar posición del bloque donde miras",          InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F10, new KeyMapping.Category(Identifier.tryParse("commander"))));
+
+    // Crear categoría (agrupa tus teclas en el menú de controles)
+    private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(
+            Identifier.fromNamespaceAndPath("commander", "general")
+    );
+
+    private static final KeyMapping openGuiF8                 = KeyBindingHelper.registerKeyBinding(new KeyMapping("Open Commander Config",                           InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F8, CATEGORY));
+    private static final KeyMapping copyAndConvertToNether    = KeyBindingHelper.registerKeyBinding(new KeyMapping("Copiar y convertir BlocksPosViewing a Nether",    InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F6, CATEGORY));
+    private static final KeyMapping copyAndConvertToOverworld = KeyBindingHelper.registerKeyBinding(new KeyMapping("Copiar y convertir BlocksPosViewing a Overworld", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F7, CATEGORY));
+    private static final KeyMapping copyPosKey                = KeyBindingHelper.registerKeyBinding(new KeyMapping("Copiar posición",                                 InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F9, CATEGORY));
+    private static final KeyMapping copyPosViewing            = KeyBindingHelper.registerKeyBinding(new KeyMapping("Copiar posición del bloque donde miras",          InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F10, CATEGORY));
     private static final Minecraft client = Minecraft.getInstance();
 
     public static void onKey(int keyCode) {
