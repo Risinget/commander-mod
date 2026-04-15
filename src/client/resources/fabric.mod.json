@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "commander",
+	"version": "${version}",
+	"name": "commander",
+	"description": "Un mod que te permitirá agilizarte con las coordenadas, emojis, colores y más.",
+	"authors": [
+		"Risinget"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/Risinget/commander-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/commander/commander.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"risinget.commander.Commander"
+		]
+	},
+	"mixins": [
+		"commander.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.19.1",
+		"minecraft": "~1.21.11",
+		"java": ">=25",
+		"fabric-api": "*",
+		"yet_another_config_lib_v3": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

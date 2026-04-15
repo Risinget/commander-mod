@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [21]  # Versión LTS actual de Java
+        java: [25]  # Versión LTS actual de Java
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -34,7 +34,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '25'
 
       - name: Build
         run: ./gradlew build

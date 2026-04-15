@@ -39,10 +39,23 @@ repositories {
 	}
 }
 
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"modid" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+
+}
+
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+//	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// modImplementation depende de la dependencia.
@@ -51,32 +64,30 @@ dependencies {
 	// modRuntimeOnly esto lo descarga y usa el mod
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 	modImplementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
 	implementation 'org.json:json:20250107'
 	implementation 'com.cloudinary:cloudinary-core:2.3.2'
 	implementation 'com.cloudinary:cloudinary-http5:2.3.2' // Use the latest version
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
-	modRuntimeOnly 'com.terraformersmc:modmenu:17.0.0'
-	modRuntimeOnly "meteordevelopment:meteor-client:1.21.11-SNAPSHOT" // Usa la versión más reciente
+//	modRuntimeOnly 'com.terraformersmc:modmenu:18.0.0-alpha.8'
+//	modImplementation "curse.maven:modmenu-308702:7813924"
+
+
+//	modRuntimeOnly "meteordevelopment:meteor-client:1.21.11-SNAPSHOT" // Usa la versión más reciente
 
 }
-
 processResources {
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand "version": inputs.properties.version
 	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
+	it.options.release = 25
 }
-tasks.withType(JavaCompile) {
-	options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
-}
-
 
 java {
 	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
@@ -84,13 +95,15 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
 }
 
 jar {
+	inputs.property "projectName", project.name
+
 	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
+		rename { "${it}_${project.name}"}
 	}
 }
 
@@ -98,7 +111,6 @@ jar {
 publishing {
 	publications {
 		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
 			from components.java
 		}
 	}

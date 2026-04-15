@@ -27,3 +27,8 @@ Se ha añadido el comando `/gemini <prompt>` en Minecraft Java 1.21.4, permitien
 # 13/04/2025 Update
 - **Descripción**:
     - Actualizacion a 1.21.4 -> 1.21.11
+    - Usando minecraft desofuscado original mappings 1.21.11
+    - Corrección de errores menores y mejoras de rendimiento.
+    - Bugs/Fixes
+      - Conversion de texto a colores en el archivo colored.txt, ahora se muestra correctamente -> Anteriormente solamente texto plano
+      - Varios metodos de estilizacion de texto han sido corregidos a su nuevo metodo de uso
