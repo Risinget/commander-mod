@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "commander",
-	"version": "${version}",
+	"version": "1.4.2+26.1",
 	"name": "commander",
 	"description": "Un mod que te permitirá agilizarte con las coordenadas, emojis, colores y más.",
 	"authors": [

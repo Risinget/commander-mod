@@ -71,7 +71,8 @@ dependencies {
 	// modRuntimeOnly esto lo descarga y usa el mod
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
-	implementation "curse.maven:yacl-667299:7904436"
+//	implementation "curse.maven:yacl-667299:7904436"
+	implementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
 	implementation 'org.json:json:20250107'
 	implementation 'com.cloudinary:cloudinary-core:2.3.2'
 	implementation 'com.cloudinary:cloudinary-http5:2.3.2' // Use the latest version
