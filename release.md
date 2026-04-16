@@ -38,5 +38,5 @@ Se ha añadido el comando `/gemini <prompt>` en Minecraft Java 1.21.4, permitien
     - Usando minecraft desofuscado original mappings de 26.1
     - Corrección de errores menores y mejoras de rendimiento.
     - Bugs/Fixes
-        - Renombre de clases de tecla y commandos
-        - Muestras de texto
+        - Renombre de clases de tecla y registro de comandos
+        - Muestras de texto overlay corregidas a su nuevo metodo de uso

@@ -22,9 +22,9 @@ public class CopyCoords {
 
             client.keyboardHandler.setClipboard(pos); // Use Minecraft's method to set clipboard content
             MutableComponent text = FormatterUtils.parseAndFormatText("&b&oCoords de posición copiadas");
-            // client.player.sendMessage(Text.of("Coords de posición copiadas"), true);
-//            client.player.displayClientMessage(text, true);
-
+            Minecraft.getInstance().gui.setOverlayMessage(
+                    Component.literal("Coords de posición copiadas"), false
+            );
         }
     }
 

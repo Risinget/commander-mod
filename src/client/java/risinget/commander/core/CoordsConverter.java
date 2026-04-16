@@ -20,9 +20,14 @@ public class CoordsConverter {
                 int z = Math.round((float) blockPos.getZ() /8);
                 String pos = replaceCoordsVariables(x, y, z, ConfigCommander.getFormatCoordsNether());
                 client.keyboardHandler.setClipboard(pos);
-//                client.player.displayClientMessage(Component.nullToEmpty("Coords convertidas al nether y copiadas"), true);
+
+                Minecraft.getInstance().gui.setOverlayMessage(
+                        Component.literal("Coords convertidas al nether y copiadas"), false
+                );
             } else {
-//                client.player.displayClientMessage(Component.nullToEmpty("No estas mirando ningún bloque"), true);
+              Minecraft.getInstance().gui.setOverlayMessage(
+                        Component.literal("No estas mirando ningun bloque"), false
+                );
             }
         }
     }
@@ -37,10 +42,13 @@ public class CoordsConverter {
                 int z = blockPos.getZ()*8;
                 String pos = replaceCoordsVariables(x, y, z, ConfigCommander.getFormatCoordsOverworld());
                 client.keyboardHandler.setClipboard(pos);
-//                client.player.displayClientMessage(Component.nullToEmpty("Coords convertidas al overworld y copiadas"), true);
-
+                Minecraft.getInstance().gui.setOverlayMessage(
+                    Component.literal("Coords convertidas al overworld y copiadas"), false
+                );
             } else {
-//                client.player.displayClientMessage(Component.nullToEmpty("No estas mirando ningún bloque"), true);
+                Minecraft.getInstance().gui.setOverlayMessage(
+                    Component.literal("No estas mirando ningún bloque"), false
+                );
             }
         }
     }
