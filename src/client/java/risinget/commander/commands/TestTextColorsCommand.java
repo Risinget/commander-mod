@@ -1,7 +1,7 @@
 package risinget.commander.commands;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
@@ -13,8 +13,8 @@ public class TestTextColorsCommand {
 
     public TestTextColorsCommand() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("testColors")
-                .then(ClientCommandManager.argument("text", StringArgumentType.greedyString())
+            dispatcher.register(ClientCommands.literal("testColors")
+                .then(ClientCommands.argument("text", StringArgumentType.greedyString())
                     .executes(context -> {
                         String textToTest = StringArgumentType.getString(context, "text");
                         MutableComponent textColored = FormatterUtils.parseAndFormatText(textToTest)

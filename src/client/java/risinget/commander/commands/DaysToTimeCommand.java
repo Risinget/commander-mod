@@ -2,7 +2,7 @@ package risinget.commander.commands;
 
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.network.chat.MutableComponent;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import risinget.commander.utils.FormatterUtils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,9 +13,9 @@ public class DaysToTimeCommand {
 
     public DaysToTimeCommand() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("daystotime")
+            dispatcher.register(ClientCommands.literal("daystotime")
                 .executes(context -> {
-                    long timeOfDay = context.getSource().getWorld().getDayTime();
+                    long timeOfDay = context.getSource().getClient().player.level().getGameTime() % 24000;
                     this.days = timeOfDay / 24000;
                     long totalSeconds = this.days * 1200;
                     totalSeconds %= (3600 * 24);

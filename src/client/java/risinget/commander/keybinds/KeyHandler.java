@@ -1,15 +1,16 @@
 package risinget.commander.keybinds;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import org.lwjgl.glfw.GLFW;
 import risinget.commander.core.CopyCoords;
 import risinget.commander.core.CoordsConverter;
 import risinget.commander.gui.ScreenGUI;
-
 public class KeyHandler {
 
 
@@ -18,11 +19,11 @@ public class KeyHandler {
             Identifier.fromNamespaceAndPath("commander", "general")
     );
 
-    private static final KeyMapping openGuiF8                 = KeyBindingHelper.registerKeyBinding(new KeyMapping("Open Commander Config",                           InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F8, CATEGORY));
-    private static final KeyMapping copyAndConvertToNether    = KeyBindingHelper.registerKeyBinding(new KeyMapping("Copiar y convertir BlocksPosViewing a Nether",    InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F6, CATEGORY));
-    private static final KeyMapping copyAndConvertToOverworld = KeyBindingHelper.registerKeyBinding(new KeyMapping("Copiar y convertir BlocksPosViewing a Overworld", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F7, CATEGORY));
-    private static final KeyMapping copyPosKey                = KeyBindingHelper.registerKeyBinding(new KeyMapping("Copiar posición",                                 InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F9, CATEGORY));
-    private static final KeyMapping copyPosViewing            = KeyBindingHelper.registerKeyBinding(new KeyMapping("Copiar posición del bloque donde miras",          InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F10, CATEGORY));
+    private static final KeyMapping openGuiF8                 = KeyMappingHelper.registerKeyMapping(new KeyMapping("Open Commander Config",                           InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F8, CATEGORY));
+    private static final KeyMapping copyAndConvertToNether    = KeyMappingHelper.registerKeyMapping(new KeyMapping("Copiar y convertir BlocksPosViewing a Nether",    InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F6, CATEGORY));
+    private static final KeyMapping copyAndConvertToOverworld = KeyMappingHelper.registerKeyMapping(new KeyMapping("Copiar y convertir BlocksPosViewing a Overworld", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F7, CATEGORY));
+    private static final KeyMapping copyPosKey                = KeyMappingHelper.registerKeyMapping(new KeyMapping("Copiar posición",                                 InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F9, CATEGORY));
+    private static final KeyMapping copyPosViewing            = KeyMappingHelper.registerKeyMapping(new KeyMapping("Copiar posición del bloque donde miras",          InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F10, CATEGORY));
     private static final Minecraft client = Minecraft.getInstance();
 
     public static void onKey(int keyCode) {

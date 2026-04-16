@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
@@ -27,8 +27,8 @@ public class GeminiAICommand {
   
     public GeminiAICommand(){
       ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("gemini")
-                .then(ClientCommandManager.argument("prompt", StringArgumentType.greedyString())
+            dispatcher.register(ClientCommands.literal("gemini")
+                .then(ClientCommands.argument("prompt", StringArgumentType.greedyString())
                     .executes(context -> {
                         String prompt = StringArgumentType.getString(context, "prompt");
                         CompletableFuture<String> futureResponse = sendRequestAndGetResponse(prompt);

@@ -1,8 +1,8 @@
 package risinget.commander.commands;
 
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import risinget.commander.utils.FormatterUtils;
 import risinget.commander.utils.Prefix;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
@@ -13,7 +13,7 @@ public class ColorsCommand {
 
     public ColorsCommand() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("colors").executes(context -> {
+            dispatcher.register(ClientCommands.literal("colors").executes(context -> {
                 String[] colors = {
                         "&0", "&1", "&2", "&3",
                         "&4", "&5", "&6", "&7",

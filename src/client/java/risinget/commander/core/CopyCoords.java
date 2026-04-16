@@ -23,7 +23,7 @@ public class CopyCoords {
             client.keyboardHandler.setClipboard(pos); // Use Minecraft's method to set clipboard content
             MutableComponent text = FormatterUtils.parseAndFormatText("&b&oCoords de posición copiadas");
             // client.player.sendMessage(Text.of("Coords de posición copiadas"), true);
-            client.player.displayClientMessage(text, true);
+//            client.player.displayClientMessage(text, true);
 
         }
     }
@@ -38,7 +38,7 @@ public class CopyCoords {
                 int z = blockPos.getZ();
                 String pos = replaceCoordsVariables(x, y, z);
                 client.keyboardHandler.setClipboard(pos); // Use Minecraft's method to set clipboard content
-                client.player.displayClientMessage(Component.nullToEmpty("Coords del bloque copiadas"), true);
+//                client.player.(Component.nullToEmpty("Coords del bloque copiadas"), true);
 
             }
         }

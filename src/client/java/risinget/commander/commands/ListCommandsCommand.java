@@ -1,6 +1,6 @@
 package risinget.commander.commands;
 
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.network.chat.MutableComponent;
 import risinget.commander.utils.FormatterUtils;
@@ -10,7 +10,7 @@ public class ListCommandsCommand {
     public ListCommandsCommand() {
 
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("commands").executes(context -> {
+            dispatcher.register(ClientCommands.literal("commands").executes(context -> {
                 String commands = """
                         &c&lComandos disponibles:&r
                         &b/testTextColors <texto> &6-&7 Prueba la salida de texto con colores&r

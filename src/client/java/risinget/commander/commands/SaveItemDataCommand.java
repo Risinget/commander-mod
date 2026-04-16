@@ -1,7 +1,7 @@
 package risinget.commander.commands;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.Minecraft;
@@ -26,8 +26,8 @@ public class SaveItemDataCommand {
 
     public SaveItemDataCommand() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("saveItem")
-                    .then(ClientCommandManager.argument("texto", StringArgumentType.string())
+            dispatcher.register(ClientCommands.literal("saveItem")
+                    .then(ClientCommands.argument("texto", StringArgumentType.string())
                             .executes((context)->{
 
 //                                String texto = StringArgumentType.getString(context, "texto");

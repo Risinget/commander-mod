@@ -1,6 +1,6 @@
 package risinget.commander.commands;
 
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
@@ -14,7 +14,7 @@ public class TorchUtility {
     public TorchUtility(){
         ClientTickEvents.END_CLIENT_TICK.register(TorchUtility::torch);
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("torch")
+            dispatcher.register(ClientCommands.literal("torch")
                 .executes((context)->{
                    torch(context.getSource().getClient());
                    return 1;

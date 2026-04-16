@@ -1,8 +1,9 @@
 
 package risinget.commander.commands;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -22,7 +23,7 @@ public final class EnchantUtilityCommand
     private static final Minecraft client = Minecraft.getInstance();
     public EnchantUtilityCommand(){
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("enchantBruh")
+            dispatcher.register(ClientCommands.literal("enchantBruh")
                 .executes((context)->{
 
                     if(!context.getSource().getClient().player.getAbilities().instabuild){

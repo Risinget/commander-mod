@@ -5,7 +5,7 @@ import risinget.commander.utils.Prefix;
 import java.util.HashMap;
 import java.util.Map;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
@@ -17,8 +17,8 @@ public class SmallCapsCommand {
     public SmallCapsCommand() {
         Map<Character, Character> diccionario = getDiccionario();
 
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("smallcaps")
-            .then(ClientCommandManager.argument("texto", StringArgumentType.greedyString())
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommands.literal("smallcaps")
+            .then(ClientCommands.argument("texto", StringArgumentType.greedyString())
                 .executes(context -> {
                     String texto = StringArgumentType.getString(context, "texto");
                     StringBuilder textoConvertido = new StringBuilder();

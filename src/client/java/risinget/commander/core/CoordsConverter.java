@@ -20,9 +20,9 @@ public class CoordsConverter {
                 int z = Math.round((float) blockPos.getZ() /8);
                 String pos = replaceCoordsVariables(x, y, z, ConfigCommander.getFormatCoordsNether());
                 client.keyboardHandler.setClipboard(pos);
-                client.player.displayClientMessage(Component.nullToEmpty("Coords convertidas al nether y copiadas"), true);
+//                client.player.displayClientMessage(Component.nullToEmpty("Coords convertidas al nether y copiadas"), true);
             } else {
-                client.player.displayClientMessage(Component.nullToEmpty("No estas mirando ningún bloque"), true);
+//                client.player.displayClientMessage(Component.nullToEmpty("No estas mirando ningún bloque"), true);
             }
         }
     }
@@ -37,10 +37,10 @@ public class CoordsConverter {
                 int z = blockPos.getZ()*8;
                 String pos = replaceCoordsVariables(x, y, z, ConfigCommander.getFormatCoordsOverworld());
                 client.keyboardHandler.setClipboard(pos);
-                client.player.displayClientMessage(Component.nullToEmpty("Coords convertidas al overworld y copiadas"), true);
+//                client.player.displayClientMessage(Component.nullToEmpty("Coords convertidas al overworld y copiadas"), true);
 
             } else {
-                client.player.displayClientMessage(Component.nullToEmpty("No estas mirando ningún bloque"), true);
+//                client.player.displayClientMessage(Component.nullToEmpty("No estas mirando ningún bloque"), true);
             }
         }
     }

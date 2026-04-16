@@ -2,7 +2,7 @@ package risinget.commander.commands;
 
 import risinget.commander.utils.FormatterUtils;
 
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
@@ -14,7 +14,7 @@ public class WordsListCommand {
     };
     public WordsListCommand() {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("wordlist").executes(context -> {
+            dispatcher.register(ClientCommands.literal("wordlist").executes(context -> {
                 for (String word : wordList) {
                     MutableComponent textWord = FormatterUtils.parseAndFormatText(word)
                         .withStyle(style -> style
